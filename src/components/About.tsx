@@ -6,7 +6,7 @@ const SKILLS = [
   { group: 'Languages', items: ['Go', 'Rust', 'TypeScript', 'Python', 'SQL', 'JavaScript'] },
   { group: 'Infrastructure', items: ['PostgreSQL', 'Redis', 'REST APIs', 'Docker', 'Cloudflare', 'AWS'] },
   { group: 'Domains', items: ['Payments', 'Developer Tools', 'Fintech', 'DevEx', 'Privacy', 'Automation'] },
-  { group: 'Tools', items: ['React', 'Next.js', 'Vue.js', 'Nuxt.js', 'Tailwind CSS', 'Git', 'CI/CD'] },
+  { group: 'Tools', items: ['React', 'Next.js', 'Vue.js', 'Nuxt.js', 'Tailwind CSS', 'Git', 'CI/CD', 'Open Source'] },
 ]
 
 export function About() {
