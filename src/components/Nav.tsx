@@ -19,7 +19,6 @@ export function Nav() {
   const [hireOpen, setHireOpen] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const pathname = useRouterState({ select: s => s.location.pathname })
-  const isHome = pathname === '/'
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -31,11 +30,6 @@ export function Nav() {
   useEffect(() => {
     setMobileOpen(false)
   }, [pathname])
-
-  const scrollTo = (id: string) => {
-    setMobileOpen(false)
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-  }
 
   return (
     <>
@@ -92,28 +86,15 @@ export function Nav() {
             Work
           </Link>
 
-          {isHome ? (
-            <button
-              type="button"
-              onClick={() => scrollTo('thinking')}
-              style={navLinkStyle}
-              onMouseEnter={e => (e.currentTarget.style.color = 'var(--text)')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-soft)')}
-            >
-              Thinking
-            </button>
-          ) : (
-            <Link
-              to="/"
-              hash="thinking"
-              hashScrollIntoView={{ behavior: 'smooth', block: 'start' }}
-              style={navLinkStyle}
-              onMouseEnter={e => (e.currentTarget.style.color = 'var(--text)')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-soft)')}
-            >
-              Thinking
-            </Link>
-          )}
+          <Link
+            to="/blog"
+            style={navLinkStyle}
+            activeProps={{ style: { ...navLinkStyle, color: 'var(--text)' } }}
+            onMouseEnter={e => (e.currentTarget.style.color = 'var(--text)')}
+            onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-soft)')}
+          >
+            Blog
+          </Link>
 
           <Link
             to="/about"
@@ -189,15 +170,9 @@ export function Nav() {
             Work
           </Link>
 
-          {isHome ? (
-            <button type="button" style={{ ...navLinkStyle, display: 'block', width: '100%', textAlign: 'left', padding: '0.85rem 0', borderBottom: '1px solid var(--line)', fontSize: '1rem' }} onClick={() => scrollTo('thinking')}>
-              Thinking
-            </button>
-          ) : (
-            <Link to="/" hash="thinking" style={{ ...navLinkStyle, display: 'block', padding: '0.85rem 0', borderBottom: '1px solid var(--line)', fontSize: '1rem' }} onClick={() => setMobileOpen(false)}>
-              Thinking
-            </Link>
-          )}
+          <Link to="/blog" style={{ ...navLinkStyle, display: 'block', padding: '0.85rem 0', borderBottom: '1px solid var(--line)', fontSize: '1rem' }} onClick={() => setMobileOpen(false)}>
+            Blog
+          </Link>
 
           <Link to="/about" style={{ ...navLinkStyle, display: 'block', padding: '0.85rem 0', borderBottom: '1px solid var(--line)', fontSize: '1rem' }} onClick={() => setMobileOpen(false)}>
             About

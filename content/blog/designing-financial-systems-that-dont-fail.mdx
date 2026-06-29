@@ -1,0 +1,80 @@
+---
+title: "Designing financial systems that don't fail"
+date: "2026-03-22"
+description: "Financial systems have a different failure model than consumer apps. A 500 error on Twitter is annoying. A 500 error mid-transfer could mean lost funds, double charges, or inconsistent ledger state."
+tags:
+  - Architecture
+  - Reliability
+---
+
+Financial systems have a different failure model than consumer apps. A 500 error on Twitter is annoying. A 500 error mid-transfer could mean lost funds, double charges, or inconsistent ledger state.
+
+The patterns that matter: idempotency keys on every mutation, event sourcing for audit trails, saga patterns for distributed transactions, and pessimistic locking on balance updates. But more than any pattern — you need to model your failure modes explicitly before writing a line of code.
+
+Ask: "What happens if this service crashes here?" for every network call. The answer tells you what you need to build.
+
+## Idempotency is non-negotiable
+
+The most important reliability pattern in financial systems is **idempotency**. Every mutation endpoint should accept an `Idempotency-Key` header. If the client retries with the same key, the server must return the same result — not execute the operation again.
+
+```typescript
+async function processTransfer(params: {
+  idempotencyKey: string
+  from: string
+  to: string
+  amount: bigint
+}) {
+  const existing = await db.idempotency.findUnique({
+    where: { key: params.idempotencyKey }
+  })
+
+  if (existing) {
+    // Return the previous result — the transfer already happened
+    return existing.result
+  }
+
+  // Execute the transfer and store the result
+  const result = await executeTransfer(params)
+  await db.idempotency.create({
+    data: { key: params.idempotencyKey, result }
+  })
+
+  return result
+}
+```
+
+Without this, a network timeout followed by a retry could execute a transfer twice. The business logic for handling duplicates is complex and error-prone — idempotency keys make it mechanical.
+
+## The saga pattern for distributed transactions
+
+When a single financial operation spans multiple services (deduct from account A, credit account B, record the ledger entry, send the notification), you can't use a database transaction. Each service owns its data.
+
+The **saga pattern** breaks the operation into a series of local transactions, each with a compensating action for rollback:
+
+| Step | Action | Compensation |
+|------|--------|-------------|
+| 1 | Reserve funds in source account | Release reservation |
+| 2 | Send to settlement provider | Cancel settlement |
+| 3 | Credit destination account | Reverse credit |
+| 4 | Record ledger entry | Mark as reversed |
+| 5 | Send notification | (None — eventually consistent) |
+
+If step 3 fails, the saga executes compensating actions for steps 2 and 1. This gives you atomicity without distributed locking.
+
+## The one question rule
+
+The most valuable reliability practice I've adopted is deceptively simple: **before writing any network call, ask "what happens if this crashes here?"**
+
+```typescript
+async function handlePaymentWebhook(payload: WebhookEvent) {
+  // What if we crash after saving to DB but before calling the notification service?
+  await db.payment.update({ where: { id: payload.id }, data: { status: 'confirmed' } })
+
+  // What if we crash here? The payment is confirmed but the user doesn't know.
+  await notificationService.send(payload.userId, 'Payment confirmed!')
+}
+```
+
+The answer to "what if this crashes here?" tells you exactly what recovery mechanism you need. In the example above, the answer is a **background job** — save the notification intent to the database (in the same transaction as the payment update) and let a worker deliver it reliably.
+
+Model your failure modes first. The code for the happy path will write itself.

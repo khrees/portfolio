@@ -1,63 +1,18 @@
 import { useRef } from 'react'
 import { useGSAP, gsap } from '#/lib/gsap'
 import { motion } from 'motion/react'
+import { posts } from '#/lib/blog'
 
-type Essay = {
+function EssayItem({ slug, number, title, description, tag, index }: {
+  slug: string
   number: string
   title: string
-  body: string
+  description: string
   tag: string
-}
-
-const ESSAYS: Essay[] = [
-  {
-    number: '01',
-    title: 'Why recurring payments on-chain are fundamentally hard',
-    tag: 'Blockchain · Payments',
-    body: `Traditional payment mandates work because banks are trusted custodians — they hold your account and can debit it on your behalf. Blockchain flips this: you own your private keys, nothing moves without your signature.
-
-This means "pull payments" require a new primitive entirely. You can't just trust the merchant; you need a cryptographic commitment that limits what they can pull, when, and how much. That's what a mandate protocol has to solve: authorization scoping, time constraints, revocability, and economic incentives for execution — all without a centralized party.
-
-Most attempts either compromise self-custody or produce poor UX. The real solution requires deep protocol design, not just a smart contract wrapper.`,
-  },
-  {
-    number: '02',
-    title: 'Designing financial systems that don\'t fail',
-    tag: 'Architecture · Reliability',
-    body: `Financial systems have a different failure model than consumer apps. A 500 error on Twitter is annoying. A 500 error mid-transfer could mean lost funds, double charges, or inconsistent ledger state.
-
-The patterns that matter: idempotency keys on every mutation, event sourcing for audit trails, saga patterns for distributed transactions, and pessimistic locking on balance updates. But more than any pattern — you need to model your failure modes explicitly before writing a line of code.
-
-Ask: "What happens if this service crashes here?" for every network call. The answer tells you what you need to build.`,
-  },
-  {
-    number: '03',
-    title: 'The hidden cost of third-party integrations',
-    tag: 'Systems · Scale',
-    body: `Every external API you integrate is a risk surface. Payment gateways fail. Mobile money operators return inconsistent status codes. Webhooks arrive out of order, duplicated, or not at all.
-
-After integrating 12+ financial providers at Maplerad, the pattern is clear: you need an abstraction layer that normalizes provider behavior, circuit breakers that detect degradation before it cascades, and dead letter queues for events that need human review.
-
-The code that handles the happy path is 20% of the work. The code that handles provider failures is the other 80%.`,
-  },
-  {
-    number: '04',
-    title: 'Developer experience is a product decision',
-    tag: 'DevEx · Product',
-    body: `API documentation isn't a nice-to-have — it's the product. When developers can't figure out your API, they don't call support. They leave.
-
-Good developer experience means: predictable error formats, idempotent endpoints, clear rate limiting headers, and examples that actually work. It means your SDK has TypeScript types. It means your status page shows real-time health.
-
-At Mono, I learned that most "bugs" reported by partners were actually documentation gaps. Fixing the docs eliminated the ticket entirely. The best support is no support needed.`,
-  },
-]
-
-function EssayItem({ essay, index }: { essay: Essay; index: number }) {
-  const ref = useRef<HTMLDivElement>(null)
-
+  index: number
+}) {
   return (
     <motion.div
-      ref={ref}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
@@ -76,7 +31,7 @@ function EssayItem({ essay, index }: { essay: Essay; index: number }) {
             color: 'var(--text-muted)',
             letterSpacing: '0.1em',
           }}>
-            {essay.number}
+            {number}
           </span>
         </div>
 
@@ -89,7 +44,7 @@ function EssayItem({ essay, index }: { essay: Essay; index: number }) {
             display: 'block',
             marginBottom: '0.75rem',
           }}>
-            {essay.tag}
+            {tag}
           </span>
 
           <h3 style={{
@@ -98,24 +53,52 @@ function EssayItem({ essay, index }: { essay: Essay; index: number }) {
             fontWeight: 600,
             letterSpacing: '-0.02em',
             color: 'var(--text)',
-            marginBottom: '1.25rem',
+            marginBottom: '1rem',
             lineHeight: 1.2,
           }}>
-            {essay.title}
+            {title}
           </h3>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            {essay.body.split('\n\n').map((para, i) => (
-              <p key={i} style={{ fontSize: '0.95rem', color: 'var(--text-soft)', lineHeight: 1.75, maxWidth: '640px' }}>
-                {para}
-              </p>
-            ))}
-          </div>
+          <p style={{
+            fontSize: '0.9rem',
+            color: 'var(--text-soft)',
+            lineHeight: 1.7,
+            maxWidth: '600px',
+            marginBottom: '1.25rem',
+          }}>
+            {description}
+          </p>
+
+          <a
+            href={`/blog/${slug}`}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.35rem',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.7rem',
+              color: 'var(--electric-bright)',
+              textDecoration: 'none',
+              letterSpacing: '0.05em',
+              transition: 'opacity 0.2s',
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.7' }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = '1' }}
+          >
+            Read full essay →
+          </a>
         </div>
       </div>
     </motion.div>
   )
 }
+
+const essayMeta = [
+  { number: '01', slug: posts[0].slug, title: posts[0].title, description: posts[0].description, tag: 'Blockchain · Payments' },
+  { number: '02', slug: posts[1].slug, title: posts[1].title, description: posts[1].description, tag: 'Architecture · Reliability' },
+  { number: '03', slug: posts[2].slug, title: posts[2].title, description: posts[2].description, tag: 'Systems · Scale' },
+  { number: '04', slug: posts[3].slug, title: posts[3].title, description: posts[3].description, tag: 'DevEx · Product' },
+]
 
 export function Thinking() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -165,9 +148,33 @@ export function Thinking() {
           </h2>
         </div>
 
-        {ESSAYS.map((essay, i) => (
-          <EssayItem key={essay.number} essay={essay} index={i} />
+        {essayMeta.map((essay, i) => (
+          <EssayItem key={essay.number} {...essay} index={i} />
         ))}
+
+        <div style={{ marginTop: '2.5rem' }}>
+          <a
+            href="/blog"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.35rem',
+              padding: '0.65rem 1.4rem',
+              background: 'var(--electric)',
+              color: '#fff',
+              borderRadius: '8px',
+              fontWeight: 600,
+              fontSize: '0.85rem',
+              textDecoration: 'none',
+              transition: 'background 0.2s, transform 0.2s',
+              fontFamily: 'var(--font-sans)',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'var(--electric-bright)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'var(--electric)'; e.currentTarget.style.transform = 'translateY(0)' }}
+          >
+            Read all essays →
+          </a>
+        </div>
       </div>
     </section>
   )

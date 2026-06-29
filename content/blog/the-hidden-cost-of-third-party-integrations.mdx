@@ -1,0 +1,99 @@
+---
+title: "The hidden cost of third-party integrations"
+date: "2026-02-15"
+description: "Every external API you integrate is a risk surface. Payment gateways fail. Mobile money operators return inconsistent status codes. Webhooks arrive out of order, duplicated, or not at all."
+tags:
+  - Systems
+  - Scale
+---
+
+Every external API you integrate is a risk surface. Payment gateways fail. Mobile money operators return inconsistent status codes. Webhooks arrive out of order, duplicated, or not at all.
+
+After integrating 12+ financial providers at Maplerad, the pattern is clear: you need an abstraction layer that normalizes provider behavior, circuit breakers that detect degradation before it cascades, and dead letter queues for events that need human review.
+
+The code that handles the happy path is 20% of the work. The code that handles provider failures is the other 80%.
+
+## The abstraction layer
+
+Every provider has its own API shape, error format, and behavior quirks. The first integration is easy. The tenth is unsustainable without a common interface:
+
+```typescript
+interface PaymentProvider {
+  name: string
+  initiateTransfer(params: TransferParams): Promise<TransferResult>
+  checkStatus(reference: string): Promise<TransferStatus>
+  webhookSchema: Record<string, WebhookMapping>
+}
+```
+
+Each provider implements this interface, and the rest of the system only talks to the interface. When a provider returns a `200` for a failed transfer (happens more than you'd think), the implementation normalizes it. When a provider uses `pending` for both "processing" and "failed" (happens too), the implementation disambiguates.
+
+## Circuit breakers
+
+A failing upstream provider shouldn't take down your entire system. Circuit breakers detect degradation and stop calling a provider before the failures cascade:
+
+```typescript
+class CircuitBreaker {
+  private failures: number = 0
+  private lastFailure: number = 0
+  private state: 'closed' | 'open' | 'half-open' = 'closed'
+
+  constructor(
+    private readonly threshold: number = 5,
+    private readonly resetTimeout: number = 30_000,
+  ) {}
+
+  async call<T>(fn: () => Promise<T>): Promise<T> {
+    if (this.state === 'open') {
+      if (Date.now() - this.lastFailure > this.resetTimeout) {
+        this.state = 'half-open'
+      } else {
+        throw new CircuitBreakerOpenError()
+      }
+    }
+
+    try {
+      const result = await fn()
+      if (this.state === 'half-open') {
+        this.state = 'closed'
+        this.failures = 0
+      }
+      return result
+    } catch (err) {
+      this.failures++
+      this.lastFailure = Date.now()
+      if (this.failures >= this.threshold) {
+        this.state = 'open'
+      }
+      throw err
+    }
+  }
+}
+```
+
+With circuit breakers, a degraded MTN MoMo API in Nigeria won't block transfers going through Interswitch in Kenya. Each provider's health is isolated.
+
+## Dead letter queues
+
+Some events can't be processed automatically — the data is malformed, the provider is down for hours, or the webhook payload is from an unknown schema version. These need **human review**.
+
+A dead letter queue (DLQ) stores failed events with metadata about why they failed. A dashboard lets operations staff inspect, replay, or discard them:
+
+```typescript
+type DeadLetter = {
+  id: string
+  provider: string
+  payload: unknown
+  error: string
+  failedAt: Date
+  retryCount: number
+}
+```
+
+The rule: every integration event should end up either successfully processed or in a dead letter queue. If it silently disappears into a logging system that nobody reads, you'll discover it when a customer complains. That's too late.
+
+## The 80% rule
+
+Happy path code is easy to write, test, and reason about. Error handling is tedious, conditional, and full of edge cases. But the 80% of work that goes into handling provider failures is what separates a system that works in production from one that works on your laptop.
+
+When evaluating a new integration, I now estimate the happy path (2 days) and the error handling (8 days). If the timeline seems too aggressive, I'm underestimating the provider's quirks.

@@ -1,0 +1,82 @@
+---
+title: "Developer experience is a product decision"
+date: "2026-01-28"
+description: "API documentation isn't a nice-to-have — it's the product. When developers can't figure out your API, they don't call support. They leave."
+tags:
+  - DevEx
+  - Product
+---
+
+API documentation isn't a nice-to-have — it's the product. When developers can't figure out your API, they don't call support. They leave.
+
+Good developer experience means: predictable error formats, idempotent endpoints, clear rate limiting headers, and examples that actually work. It means your SDK has TypeScript types. It means your status page shows real-time health.
+
+At Mono, I learned that most "bugs" reported by partners were actually documentation gaps. Fixing the docs eliminated the ticket entirely. The best support is no support needed.
+
+## Error messages that help
+
+The most common anti-pattern in API design is the generic error response:
+
+```json
+{
+  "error": "Bad Request"
+}
+```
+
+This tells the developer nothing. What was bad? Which field? What format was expected?
+
+Instead, use structured errors that tell the developer exactly what to fix:
+
+```json
+{
+  "error": {
+    "code": "INVALID_PARAMETER",
+    "message": "The 'amount' field must be a positive integer",
+    "field": "amount",
+    "docs_url": "https://docs.example.com/api/reference#transactions"
+  },
+  "request_id": "req_abc123"
+}
+```
+
+The difference seems small, but it's the difference between a developer fixing the issue in 10 seconds versus filing a support ticket and waiting 24 hours.
+
+## TypeScript types as documentation
+
+If your API has an SDK, hand-maintained type definitions drift. Auto-generated types from your OpenAPI spec stay in sync. If you ship types that match your API response exactly, IDEs become your documentation:
+
+```typescript
+// When the API changes, the types change. When the types change,
+// the developer's editor tells them immediately.
+type TransferResponse = {
+  id: string
+  status: 'pending' | 'success' | 'failed'
+  amount: number
+  currency: string
+  created_at: string
+  metadata?: Record<string, string>
+}
+```
+
+The developer doesn't need to open a browser tab to check whether `currency` is `"NGN"` or `"NGN"` as an enum — their editor shows it. This isn't a nice-to-have. It's the difference between a 5-minute integration and a 5-hour one.
+
+## Rate limiting that communicates
+
+Rate limits are inevitable. Bad APIs just return `429 Too Many Requests`. Good APIs tell you what you need to know:
+
+```
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 42
+X-RateLimit-Reset: 1700000000
+Retry-After: 30
+```
+
+With these headers, a smart client can back off appropriately without guessing. Without them, developers resort to exponential backoff with random jitter — which works, but adds unnecessary latency when the rate limit resets in 2 seconds.
+
+## The metric that matters
+
+At Mono, we tracked **time-to-first-hello-world** — how long from sign-up to the first successful API call. Anything over 15 minutes was a problem. We found that most of the friction came from unclear documentation and inconsistent error formats.
+
+Fixing those dropped the average from 45 minutes to 8. The support tickets dropped proportionally.
+
+Your API's error messages are your customer support team. Your SDK types are your documentation. Invest accordingly.

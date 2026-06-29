@@ -1,4 +1,4 @@
-import { Outlet, createRootRoute } from '@tanstack/react-router'
+import { createRootRoute, Outlet } from '@tanstack/react-router'
 import { SmoothScroll } from '../components/SmoothScroll'
 import { CustomCursor } from '../components/CustomCursor'
 

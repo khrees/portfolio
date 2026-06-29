@@ -1,0 +1,47 @@
+---
+title: "Why recurring payments on-chain are fundamentally hard"
+date: "2026-04-10"
+description: "Traditional payment mandates work because banks are trusted custodians — they hold your account and can debit it on your behalf. Blockchain flips this: you own your private keys, nothing moves without your signature."
+tags:
+  - Blockchain
+  - Payments
+---
+
+Traditional payment mandates work because banks are trusted custodians — they hold your account and can debit it on your behalf. Blockchain flips this: you own your private keys, nothing moves without your signature.
+
+This means "pull payments" require a new primitive entirely. You can't just trust the merchant; you need a cryptographic commitment that limits what they can pull, when, and how much. That's what a mandate protocol has to solve: authorization scoping, time constraints, revocability, and economic incentives for execution — all without a centralized party.
+
+Most attempts either compromise self-custody or produce poor UX. The real solution requires deep protocol design, not just a smart contract wrapper.
+
+## The core tension
+
+On-chain recurring payments face a fundamental tension: how do you authorize a third party to move funds from your wallet without giving them unrestricted access?
+
+ERC-20 `approve` is the obvious starting point, but it's binary — either a spender can drain your entire balance or they can't. There's no concept of "up to X per month." EIP-2612 permits added a gasless approval flow, but the underlying primitive is the same.
+
+What you actually need is a **mandate** — a signed off-chain intent that defines:
+
+- **Maximum amount per charge**
+- **Maximum frequency** (e.g., once per 30 days)
+- **Total cap** (e.g., no more than $1,000 ever)
+- **Expiration** (the mandate auto-revokes after a date)
+- **Revocability** (the user can cancel at any time)
+
+## Why this is hard to do well
+
+The naive approach is a smart contract that holds a balance and releases it on signed requests from a merchant. This works, but it's not self-custodial — you've deposited funds into a contract, and now you trust that contract's logic (and upgradeability) as much as you'd trust a bank.
+
+The hard version lets the funds stay in your wallet and uses **delegated execution** — you sign a mandate, and a relayer executes charges against it on-chain. This preserves self-custody, but introduces new problems:
+
+1. **Execution guarantees**: What if the relayer goes down and misses a charge? The merchant doesn't get paid.
+2. **Gas volatility**: The relayer pays gas, but who sets the gas limit? Too low and the transaction stalls, too high and costs eat the margin.
+3. **Frontrunning**: A pending charge transaction reveals the merchant's execution strategy. MEV bots can extract value.
+4. **Revocation races**: What happens if a user revokes a mandate while a charge is in-flight? You need careful ordering of nonces.
+
+## The primitive we're missing
+
+None of this is fundamentally impossible — it's just that the Ethereum execution model wasn't designed for recurring payments. Every charge is a separate transaction, and every transaction requires the user's account to have ETH for gas, or a relayer to subsidize it.
+
+The real breakthrough will come from **account abstraction** (ERC-4337) where smart contract wallets can define custom authorization logic — like mandate verification — directly in the wallet's validation step. But even then, the economic incentives for relayers to execute recurring charges reliably need to be designed carefully.
+
+Until then, the best solutions are hybrid: on-chain settlement, off-chain mandate storage, and economic slashing for missed executions. It's not clean, but it works.
