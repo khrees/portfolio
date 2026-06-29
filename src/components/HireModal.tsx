@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect, useRef } from 'react'
+import { Fragment, useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { X } from 'lucide-react'
 
@@ -18,6 +18,7 @@ export function HireModal({ open, onClose }: HireModalProps) {
   const [message, setMessage] = useState('')
   const [status, setStatus] = useState<Status>('idle')
   const nameRef = useRef<HTMLInputElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
 
   // Focus first field on open
   useEffect(() => {
@@ -26,15 +27,31 @@ export function HireModal({ open, onClose }: HireModalProps) {
     }
   }, [open])
 
-  // Close on Escape
-  useEffect(() => {
+  // Close on Escape + focus trap
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (!open) return
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
+    if (e.key === 'Escape') { onClose(); return }
+    if (e.key !== 'Tab') return
+
+    const panel = panelRef.current
+    if (!panel) return
+    const focusable = panel.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    )
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last?.focus() }
+    } else {
+      if (document.activeElement === last) { e.preventDefault(); first?.focus() }
     }
-    window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
   }, [open, onClose])
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [handleKeyDown])
 
   // Prevent body scroll while modal is open
   useEffect(() => {
@@ -122,6 +139,10 @@ export function HireModal({ open, onClose }: HireModalProps) {
           {/* Panel */}
           <motion.div
             key="panel"
+            ref={panelRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="hire-modal-title"
             initial={{ opacity: 0, y: 40, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.97 }}
@@ -145,7 +166,7 @@ export function HireModal({ open, onClose }: HireModalProps) {
             {/* Header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.75rem' }}>
               <div>
-                <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', fontWeight: 700, color: 'var(--text)', margin: 0 }}>
+                <h2 id="hire-modal-title" style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', fontWeight: 700, color: 'var(--text)', margin: 0 }}>
                   Let's work together
                 </h2>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-soft)', margin: '0.35rem 0 0' }}>
@@ -155,6 +176,7 @@ export function HireModal({ open, onClose }: HireModalProps) {
               <button
                 type="button"
                 onClick={handleClose}
+                aria-label="Close"
                 style={{
                   background: 'none',
                   border: 'none',
@@ -172,6 +194,16 @@ export function HireModal({ open, onClose }: HireModalProps) {
               >
                 <X size={18} />
               </button>
+            </div>
+
+            {/* Live region — announces async outcomes to screen readers */}
+            <div
+              role="status"
+              aria-live="polite"
+              aria-atomic="true"
+              style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap' }}
+            >
+              {status === 'success' ? 'Message sent successfully.' : status === 'error' ? 'Failed to send. Please try again.' : ''}
             </div>
 
             {status === 'success' ? (
@@ -212,11 +244,13 @@ export function HireModal({ open, onClose }: HireModalProps) {
             ) : (
               <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
                 <div>
-                  <label style={labelStyle}>Name</label>
+                  <label htmlFor="hire-name" style={labelStyle}>Name</label>
                   <input
+                    id="hire-name"
                     ref={nameRef}
                     type="text"
                     required
+                    autoComplete="name"
                     placeholder="Your name"
                     value={name}
                     onChange={e => setName(e.target.value)}
@@ -227,10 +261,12 @@ export function HireModal({ open, onClose }: HireModalProps) {
                 </div>
 
                 <div>
-                  <label style={labelStyle}>Email</label>
+                  <label htmlFor="hire-email" style={labelStyle}>Email</label>
                   <input
+                    id="hire-email"
                     type="email"
                     required
+                    autoComplete="email"
                     placeholder="you@example.com"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
@@ -241,11 +277,12 @@ export function HireModal({ open, onClose }: HireModalProps) {
                 </div>
 
                 <div>
-                  <label style={labelStyle}>Message</label>
+                  <label htmlFor="hire-message" style={labelStyle}>Message</label>
                   <textarea
+                    id="hire-message"
                     required
                     rows={4}
-                    placeholder="Tell me about the role or project..."
+                    placeholder="Tell me about the role or project…"
                     value={message}
                     onChange={e => setMessage(e.target.value)}
                     style={{ ...inputStyle, resize: 'vertical', minHeight: '100px' }}

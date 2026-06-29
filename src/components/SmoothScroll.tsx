@@ -15,8 +15,10 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     }
   }, [lenis])
 
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
   return (
-    <ReactLenis root options={{ lerp: 0.1, duration: 1.2, smoothWheel: true }}>
+    <ReactLenis root options={{ lerp: 0.1, duration: 1.2, smoothWheel: !prefersReducedMotion }}>
       {children}
     </ReactLenis>
   )

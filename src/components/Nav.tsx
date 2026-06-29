@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useRouterState } from '@tanstack/react-router'
-import { gsap } from '#/lib/gsap'
 import { HireModal } from './HireModal'
 
 const navLinkStyle: React.CSSProperties = {
@@ -16,7 +15,6 @@ const navLinkStyle: React.CSSProperties = {
 }
 
 export function Nav() {
-  const navRef = useRef<HTMLElement>(null)
   const [scrolled, setScrolled] = useState(false)
   const [hireOpen, setHireOpen] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -24,14 +22,6 @@ export function Nav() {
   const isHome = pathname === '/'
 
   useEffect(() => {
-    gsap.from(navRef.current, {
-      y: -20,
-      opacity: 0,
-      duration: 0.8,
-      ease: 'power2.out',
-      delay: 0.2,
-    })
-
     const onScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -50,7 +40,6 @@ export function Nav() {
   return (
     <>
       <nav
-        ref={navRef}
         className="nav-blur"
         style={{
           position: 'fixed',
@@ -64,7 +53,7 @@ export function Nav() {
           alignItems: 'center',
           justifyContent: 'space-between',
           transition: 'box-shadow 0.3s',
-          boxShadow: scrolled ? '0 0 40px rgba(0,0,0,0.5)' : 'none',
+          boxShadow: scrolled ? '0 1px 0 rgba(255,255,255,0.06), 0 4px 24px rgba(0,0,0,0.4)' : 'none',
         }}
       >
         <Link

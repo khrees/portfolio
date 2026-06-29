@@ -16,7 +16,7 @@ function WorkPage() {
     <>
       <Nav />
 
-      <main style={{ position: 'relative', zIndex: 2, paddingTop: '64px' }}>
+      <main id="main-content" style={{ position: 'relative', zIndex: 2, paddingTop: '64px' }}>
         {/* Page hero */}
         <div className="work-page-hero" style={{
           padding: '6rem 0 4rem',
@@ -55,7 +55,7 @@ function WorkPage() {
             >
               Systems I've built
               <br />
-              <span className="text-gradient">that move money.</span>
+              <span className="text-gradient">that work.</span>
             </motion.h1>
 
             <motion.p
@@ -69,7 +69,7 @@ function WorkPage() {
                 maxWidth: '540px',
               }}
             >
-              Experience at production scale, founding-level ownership, and side projects built because the problem bothered me.
+              Production experience, founding-level ownership, and side projects built because the problem bothered me.
             </motion.p>
           </div>
         </div>

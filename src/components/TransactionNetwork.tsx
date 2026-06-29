@@ -64,7 +64,7 @@ function NetworkNodes({ onNodeClick }: { onNodeClick: (id: number) => void }) {
         <Line
           key={i}
           points={[a.position, b.position]}
-          color="#6366f1"
+          color="#2dd4a8"
           lineWidth={0.6}
           opacity={0.25}
           transparent
@@ -81,8 +81,8 @@ function NetworkNodes({ onNodeClick }: { onNodeClick: (id: number) => void }) {
         >
           <sphereGeometry args={[0.07, 16, 16]} />
           <meshStandardMaterial
-            color="#818cf8"
-            emissive="#6366f1"
+            color="#5eead4"
+            emissive="#2dd4a8"
             emissiveIntensity={1.5}
             roughness={0.1}
             metalness={0.8}
@@ -114,7 +114,7 @@ function ParticleField() {
 
   return (
     <Points ref={ref} positions={positions} stride={3}>
-      <PointMaterial color="#6366f1" size={0.015} sizeAttenuation transparent opacity={0.4} />
+      <PointMaterial color="#2dd4a8" size={0.015} sizeAttenuation transparent opacity={0.4} />
     </Points>
   )
 }
@@ -144,8 +144,8 @@ export function TransactionNetwork() {
         style={{ background: 'transparent' }}
       >
         <ambientLight intensity={0.3} />
-        <pointLight position={[5, 5, 5]} color="#6366f1" intensity={2} />
-        <pointLight position={[-5, -5, -5]} color="#8b5cf6" intensity={1} />
+        <pointLight position={[5, 5, 5]} color="#2dd4a8" intensity={2} />
+        <pointLight position={[-5, -5, -5]} color="#14b8a6" intensity={1} />
         <ParticleField />
         <NetworkNodes onNodeClick={handleNodeClick} />
       </Canvas>

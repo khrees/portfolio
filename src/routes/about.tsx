@@ -16,7 +16,7 @@ function AboutPage() {
     <>
       <Nav />
 
-      <main style={{ position: 'relative', zIndex: 2 }}>
+      <main id="main-content" style={{ position: 'relative', zIndex: 2 }}>
         <About />
       </main>
 

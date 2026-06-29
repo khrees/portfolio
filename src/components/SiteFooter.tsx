@@ -69,7 +69,7 @@ export function SiteFooter({ onOpenTerminal }: { onOpenTerminal: () => void }) {
               e.currentTarget.style.borderColor = 'var(--line-bright)'
               e.currentTarget.style.background = 'var(--surface)'
             }}
-            title="Open terminal (or just start typing)"
+            title="Open terminal"
           >
             &gt;_ terminal
           </button>
@@ -81,7 +81,7 @@ export function SiteFooter({ onOpenTerminal }: { onOpenTerminal: () => void }) {
           © 2026 Christian Ndu
         </p>
         <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', letterSpacing: '0.06em' }}>
-          Start typing anywhere to open terminal ↑
+          ↑↑↓↓←→←→BA for debug overlay
         </p>
       </div>
     </footer>

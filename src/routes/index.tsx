@@ -18,7 +18,7 @@ function Portfolio() {
     <>
       <Nav />
 
-      <main style={{ position: 'relative', zIndex: 2 }}>
+      <main id="main-content" style={{ position: 'relative', zIndex: 2 }}>
         <Hero />
         <Thinking />
         <GlobalContext />
@@ -61,7 +61,8 @@ function Portfolio() {
               maxWidth: '520px',
               marginBottom: '1.75rem',
             }}>
-              Financial infrastructure, payments, and systems that stay correct under real money and real scale.
+              Infrastructure, developer tools, and systems that need to work under real conditions.
+              Payments, protocols, automation, and everything in between.
               Full bio, skills, and background on the about page.
             </p>
             <Link

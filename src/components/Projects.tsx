@@ -21,65 +21,86 @@ const EXPERIENCE: Project[] = [
   {
     id: 'mono',
     name: 'Mono',
-    role: 'Developer Experience Engineer',
+    role: 'Technical Product Specialist',
     period: 'Dec 2024 – Present',
-    problem: 'Fintech developer platforms accumulate invisible failure debt — bugs that only surface at integration boundaries, documentation gaps that look like bugs, and architectural issues that require cross-team context to even name. Partners churn before support tickets get resolved.',
-    solution: 'Embedded at the intersection of engineering and product. Debug critical issues across application, network, and data layers — then convert those root causes into documentation and architectural recommendations that prevent recurrence at scale.',
+    problem: 'Developer platforms accumulate invisible failure debt. Bugs surface at integration boundaries, docs get misclassified as bugs, and architectural problems need cross-team context to even understand. Partners churn before tickets get resolved.',
+    solution: 'Sit between engineering and product. Debug issues across application, network, and data layers, then turn those findings into documentation and architecture changes that prevent the same problems from coming back.',
     stack: ['API Debugging', 'TypeScript', 'Infrastructure', 'Technical Writing', 'Open Banking'],
     highlights: [
-      'Debugged multi-layer system failures across network, application, and data tiers — identifying root causes that informed architectural improvements',
-      'Translated complex product requirements into actionable engineering tasks, bridging business needs with technical implementation for ecosystem partners',
-      'Authored technical documentation and knowledge base articles on infrastructure solutions, measurably reducing resolution time for recurring platform issues',
-      'Identified documentation gaps that were misclassified as bugs — fixing the docs eliminated entire ticket categories',
+      'Debugged system failures across network, application, and data tiers to find root causes for architectural improvements',
+      'Turned complex product requirements into engineering tasks that both business and technical teams could act on',
+      'Wrote documentation and knowledge base articles that reduced resolution time for recurring issues',
+      'Found documentation gaps that were being filed as bugs. Fixing the docs removed entire ticket categories',
     ],
     metrics: [
-      { label: 'Role', value: 'DevEx Eng' },
+      { label: 'Role', value: 'Tech Product' },
       { label: 'Impact', value: 'Platform-wide' },
-      { label: 'Domain', value: 'Open Banking' },
+      { label: 'Domain', value: 'Developer Tools' },
     ],
     accentColor: '#f59e0b',
   },
   {
     id: 'maplerad',
     name: 'Maplerad',
-    role: 'Software Engineer',
+    role: 'Lead Technical Product Specialist',
     period: 'May 2022 – Oct 2024',
-    problem: 'Cross-border payment infrastructure for Africa means integrating dozens of incompatible financial systems — mobile money operators, bank rails, card networks — each with different reliability guarantees, inconsistent status codes, and failure modes that cascade silently.',
-    solution: 'Built and owned the core payment API layer handling payments, billing, and cross-border transfers. Designed a fault-tolerant integration architecture across 12+ third-party financial providers with circuit breakers, idempotency guarantees, and dead-letter queues for unresolved events.',
-    stack: ['Go', 'PostgreSQL', 'Redis', 'Vue.js', 'REST APIs', 'Mobile Money', 'Payment Gateways'],
+    problem: 'Cross-border payments in Africa means wiring together dozens of incompatible systems. Mobile money operators, bank rails, card networks, all with different status codes, reliability, and failure modes.',
+    solution: 'Started as a Backend Engineer, grew into Lead. Built payment APIs in Go, integrated 12+ providers, shipped SDKs in Node.js and Go, and ran developer experience for 100+ business partners.',
+    stack: ['Go', 'PostgreSQL', 'Redis', 'Node.js', 'Vue.js', 'REST APIs', 'SDK Development'],
     highlights: [
-      'Engineered high-scale RESTful APIs for payments, billing, and transfers handling significant daily transaction volumes with optimized performance',
-      'Architected fault-tolerant integrations with 12+ third-party financial infrastructure providers including payment gateways and mobile money operators across Africa',
-      'Optimized core business logic using Go ORM and Redis caching strategies — targeting sub-50ms p99 latency for balance reads and transfer initiation',
-      'Implemented idempotency keys, saga patterns, and pessimistic locking on balance updates to ensure ledger consistency under concurrent load',
-      'Built reusable Vue component library that accelerated frontend development cycles and standardized user experience across the product',
+      'Built RESTful APIs for payments, billing, and transfers handling daily transaction volumes at scale',
+      'Integrated 12+ third-party providers across payment gateways and mobile money operators in Africa',
+      'Built and maintained SDKs in Node.js and Go for 100+ business partners',
+      'Led the website rebrand using Nuxt.js with a focus on performance and UI consistency',
+      'Managed a team of two while working across customer needs and internal product/engineering',
     ],
     metrics: [
       { label: 'Integrations', value: '12+' },
-      { label: 'Stack', value: 'Go · Redis' },
-      { label: 'Domain', value: 'Cross-border' },
+      { label: 'Growth', value: 'Backend → Lead' },
+      { label: 'Partners', value: '100+' },
     ],
     accentColor: '#10b981',
   },
   {
     id: 'port',
-    name: 'Port',
-    role: 'Software Engineer',
-    period: '2023 – 2024',
-    problem: 'Internal developer portals suffer from sprawl — too many tools, no single source of truth for service ownership, and manual processes that block self-service. Engineering teams slow down as orgs scale.',
-    solution: 'Contributed to backend infrastructure for an internal developer portal platform, working on service catalog APIs, scaffolding automation, and integrations with external tooling to enable self-service engineering workflows.',
-    stack: ['TypeScript', 'Node.js', 'REST APIs', 'Developer Portals', 'Backstage'],
+    name: 'Port.io',
+    role: 'Technical Support Engineer',
+    period: 'Jul 2024 – Dec 2024',
+    problem: 'Internal developer portals tend to sprawl. Too many tools, no single source of truth for service ownership, and manual processes that slow teams down as they scale.',
+    solution: 'Provided technical guidance for an Internal Developer Portal across 100+ enterprise companies. Built automation scripts, found onboarding friction, and helped bridge customers and internal engineering.',
+    stack: ['TypeScript', 'Node.js', 'Python', 'REST APIs', 'Developer Portals', 'Backstage'],
     highlights: [
-      'Built and maintained service catalog APIs enabling self-service workflows for engineering teams',
-      'Developed scaffolding automation that reduced new service setup time significantly',
-      'Integrated with external developer tooling to surface context directly in the portal layer',
+      'Gave technical guidance for an IdP tool across 100+ enterprise companies, contributing to >$2M in revenue impact',
+      'Wrote JavaScript and Python scripts to automate common support workflows',
+      'Spotted onboarding friction and built fixes that reduced the support load',
+      'Picked up a lot of enterprise DevOps and infrastructure knowledge along the way',
     ],
     metrics: [
-      { label: 'Domain', value: 'DevEx' },
+      { label: 'Impact', value: '>$2M rev' },
+      { label: 'Scale', value: '100+ companies' },
       { label: 'Stack', value: 'TypeScript' },
-      { label: 'Focus', value: 'Internal Tools' },
     ],
-    accentColor: '#6366f1',
+    accentColor: '#3b82f6',
+  },
+  {
+    id: 'bcs',
+    name: 'BCS Africa',
+    role: 'Frontend Engineer',
+    period: 'Apr 2022 – May 2022',
+    problem: 'Needed a fast, responsive marketing site that actually performs well and doesn\'t take weeks to ship.',
+    solution: 'Built the marketing website with Tailwind CSS, Next.js, and Contentful. Set up SSR, image optimization, and a CI/CD pipeline on Netlify.',
+    stack: ['Next.js', 'Tailwind CSS', 'Contentful CMS', 'Netlify', 'CI/CD'],
+    highlights: [
+      'Built a responsive marketing site with Tailwind CSS and Next.js',
+      'Implemented SSR and static site generation for performance and SEO',
+      'Set up deployment on Netlify with image optimization and lazy loading',
+    ],
+    metrics: [
+      { label: 'Stack', value: 'Next.js' },
+      { label: 'CMS', value: 'Contentful' },
+      { label: 'Deploy', value: 'Netlify' },
+    ],
+    accentColor: '#06b6d4',
   },
 ]
 
@@ -88,16 +109,16 @@ const FOUNDING: Project[] = [
   {
     id: 'debyth',
     name: 'Debyth',
-    role: 'Software Engineer — Protocol Lead',
+    role: 'Protocol Lead',
     period: 'Mar 2025 – Present',
-    problem: 'Recurring payments don\'t exist natively on-chain. Every Solana protocol requires a fresh user signature per transaction — making subscriptions, mandates, and automated billing technically impossible without reintroducing centralized intermediaries that defeat the purpose.',
-    solution: 'Architected a mandate-based pull payment protocol on Solana in Rust using the Anchor framework. Users authorize a financial mandate once with defined constraints (amount, frequency, recipient, expiry). The protocol executes recurring pulls autonomously within those constraints — no further signatures required, no trusted third party.',
+    problem: 'Recurring payments don\'t exist natively on-chain. Every Solana protocol needs a fresh signature per transaction, which makes subscriptions and automated billing basically impossible without a middleman.',
+    solution: 'Built a mandate-based pull payment protocol on Solana in Rust with Anchor. Users set up a mandate once with constraints, and the protocol executes recurring pulls on its own. No extra signatures, no third party.',
     stack: ['Rust', 'Anchor', 'Solana', 'TypeScript', 'SPL Token', 'PDAs'],
     highlights: [
-      'Designed on-chain account structures (PDAs) for financial mandate lifecycle — creation, execution, amendment, and revocation',
-      'Engineered a constrained authorization model: recipients can only pull within user-defined limits, with cryptographic enforcement at the program level',
-      'Built gas abstraction layer separating execution cost from the payer — enabling seamless UX without user-side transaction signing per cycle',
-      'Wrote comprehensive TypeScript test suites validating end-to-end payment flows, edge cases, and adversarial scenarios across complex payment cycles',
+      'Designed on-chain account structures for mandate lifecycle: create, execute, amend, revoke',
+      'Built a constrained authorization model where recipients can only pull within user-defined limits',
+      'Created a gas abstraction layer so execution costs are separated from the payer',
+      'Wrote TypeScript test suites covering full payment flows and edge cases',
     ],
     metrics: [
       { label: 'Protocol', value: 'Solana' },
@@ -110,20 +131,21 @@ const FOUNDING: Project[] = [
   {
     id: 'everest',
     name: 'Everest',
-    role: 'Software Engineer — Full Ownership',
-    period: 'Sep 2021 – May 2023',
-    problem: 'Early-stage fintech platforms face a critical tension: move fast enough to survive, while building financial systems accurate enough that a single bug doesn\'t destroy user trust. Transaction tracking failures and reconciliation gaps can be catastrophic at any scale.',
-    solution: 'Owned the complete architecture and development of a financial management platform from blank slate to production. Designed PostgreSQL schemas with financial integrity as a hard constraint — every schema decision evaluated against consistency, auditability, and performance. Integrated multiple payment APIs with careful reconciliation logic at every boundary.',
-    stack: ['Go', 'PostgreSQL', 'REST APIs', 'Payment APIs', 'Financial Reconciliation'],
+    role: 'Founder & Engineer',
+    period: 'Sep 2021 – Present',
+    problem: 'Personal finance is scattered across a bunch of apps. Banking, subscriptions, crypto, budgets, news. Nothing gives you one clear picture.',
+    solution: 'Built a financial management platform from scratch. Go backend, PostgreSQL, React frontend. Handles subscription tracking, multi-provider balance aggregation, budgeting, and alerts.',
+    stack: ['Go', 'PostgreSQL', 'React', 'Tailwind CSS', 'Redis', 'REST APIs'],
     highlights: [
-      'End-to-end ownership from architecture through production deployment — no handoffs, full accountability',
-      'Designed PostgreSQL schemas optimized for financial data integrity: immutable transaction logs, double-entry ledger patterns, and audit trail preservation',
-      'Integrated multiple third-party payment APIs, solving complex transaction tracking and reconciliation challenges unique to early-stage fintech',
-      'Built reconciliation engine that caught and recovered from provider inconsistencies without data loss',
+      'Owned the full stack from architecture to production, no handoffs',
+      'Designed PostgreSQL schemas for financial data integrity with immutable logs and audit trails',
+      'Integrated multiple payment APIs and crypto providers for unified balance views',
+      'Built subscription monitoring for services like Netflix and Spotify with alerting',
+      'Added multi-channel notifications (SMS, email, push) for financial activity',
     ],
     metrics: [
       { label: 'Ownership', value: 'End-to-end' },
-      { label: 'Database', value: 'PostgreSQL' },
+      { label: 'Stack', value: 'Go · React' },
       { label: 'Stage', value: 'Greenfield' },
     ],
     accentColor: '#3b82f6',
@@ -136,16 +158,16 @@ const SIDE_PROJECTS: Project[] = [
     id: 'autoply',
     name: 'Autoply',
     role: 'Author',
-    period: 'Apr 2026',
-    problem: 'Job applications are repetitive, high-volume work — the same form fields, the same resume uploads, the same cover letter boilerplate — across dozens of platforms with incompatible interfaces. Good candidates lose opportunities to friction, not fit.',
-    solution: 'Built a local-first job application automation tool. Scrapes job postings, generates AI-tailored resumes and cover letters per application, then uses Playwright browser automation to fill and submit across 10+ platforms. All data stored locally, all AI providers configurable.',
+    period: 'Jan 2026',
+    problem: 'Job applications are the same form fields, resume uploads, and cover letter boilerplate repeated across dozens of platforms. Friction kills more good candidates than lack of fit.',
+    solution: 'Local-first job automation tool. Scrapes postings, generates AI-tailored resumes and cover letters per application, then uses Playwright to fill and submit across 10+ platforms. Everything stays on your machine.',
     stack: ['TypeScript', 'Bun', 'Playwright', 'Patchright', 'SQLite', 'Anthropic', 'OpenAI', 'Vite'],
     highlights: [
-      'Multi-platform automation: Greenhouse, LinkedIn, Lever, Workday, Ashby, Jobvite, and 4+ more — all from a single interface',
-      'AI-tailored documents per application: resume and cover letter generated from job description context, not generic templates',
-      'Flexible submission modes — manual confirmation for review, or automatic submission when the agent is confident',
-      'Browser extension (Chrome + Firefox) for in-page autofill assistance without full automation',
-      'Local-first architecture: all history, documents, and credentials live in ~/.autoply — never in the cloud',
+      'Supports Greenhouse, LinkedIn, Lever, Workday, Ashby, Jobvite, and more from one interface',
+      'Generates a tailored resume and cover letter per application from the job description',
+      'Manual review mode or automatic submission depending on confidence',
+      'Browser extension for Chrome and Firefox that does in-page autofill',
+      'All data stored locally in ~/.autoply, nothing sent to the cloud',
     ],
     metrics: [
       { label: 'Platforms', value: '10+' },
@@ -159,15 +181,15 @@ const SIDE_PROJECTS: Project[] = [
     id: 'grepbase',
     name: 'Grepbase',
     role: 'Author',
-    period: '2025 – 2026',
-    problem: 'Understanding how a codebase evolved over time — why a pattern exists, when a decision changed, what the code looked like before a refactor — requires context that git log doesn\'t surface. Archaeology is slow and painful.',
-    solution: 'Built an AI-powered tool to time-travel through any GitHub repository\'s commit history. Navigate commits chronologically via timeline or arrow keys, browse code as it existed at any historical point, and get AI explanations of what changed and why.',
+    period: 'Dec 2025',
+    problem: 'Git log tells you what changed, not why. Understanding codebase evolution usually means reading hundreds of commits by hand.',
+    solution: 'AI-powered time-travel through any GitHub repo. Navigate commits chronologically, browse code at any historical point, and get AI explanations of what changed and why.',
     stack: ['TypeScript', 'Next.js', 'Bun', 'SQLite', 'Drizzle ORM', 'Framer Motion', 'Vercel AI SDK'],
     highlights: [
-      'Timeline navigation — move through commits chronologically, view diffs side-by-side, or browse the full file tree at any historical point',
-      'AI explanations powered by Vercel AI SDK with support for OpenAI, Anthropic, Gemini, and Ollama',
-      'Privacy-first: API keys encrypted server-side per session, never stored in the browser',
-      'Built with Next.js App Router, SQLite/Drizzle for session persistence, Framer Motion for timeline animations',
+      'Navigate commits on a timeline, view diffs side-by-side, or browse the full file tree at any point in history',
+      'AI explanations via Vercel AI SDK, supports OpenAI, Anthropic, Gemini, and Ollama',
+      'API keys encrypted server-side per session, never stored in the browser',
+      'Next.js App Router, SQLite/Drizzle for persistence, Framer Motion for animations',
     ],
     metrics: [
       { label: 'Type', value: 'Dev Tool' },
@@ -178,18 +200,87 @@ const SIDE_PROJECTS: Project[] = [
     links: [{ label: 'GitHub', href: 'https://github.com/khrees2412/grepbase' }],
   },
   {
+    id: 'veilo',
+    name: 'Veilo',
+    role: 'Author',
+    period: 'Jun 2026',
+    problem: 'You give out your real email everywhere and then deal with spam and trackers forever. Existing alias services are clunky, provider-locked, and you can\'t reply without exposing yourself.',
+    solution: 'Self-hosted email alias engine. Create disposable aliases that forward to your real inbox, reply from the alias without exposing your address, strip tracking pixels, and auto-disable after a set time or email count.',
+    stack: ['Go', 'Fiber', 'PostgreSQL', 'Resend', 'Cloudflare', 'Docker'],
+    highlights: [
+      'Forward and reply from aliases without exposing your real email address',
+      'Auto-DNS setup via Cloudflare for custom domains (MX, SPF, verification records)',
+      'Strips tracking pixels from incoming email and shows a blocked count',
+      'Aliases can self-destruct after a time limit or number of emails',
+      'Full CLI and REST API for managing domains and aliases',
+    ],
+    metrics: [
+      { label: 'Language', value: 'Go' },
+      { label: 'Deploy', value: 'Docker' },
+      { label: 'DNS', value: 'Cloudflare' },
+    ],
+    accentColor: '#2dd4a8',
+    links: [{ label: 'GitHub', href: 'https://github.com/khrees2412/veilo' }],
+  },
+  {
+    id: 'pontis',
+    name: 'Pontis',
+    role: 'Author',
+    period: 'Jun 2026',
+    problem: 'AI coding CLIs like Claude Code and OpenAI Codex expect specific API formats. If you want to use free-tier or local models, there\'s no easy way to make that work.',
+    solution: 'Bidirectional translation proxy that bridges Anthropic, OpenAI, and legacy completion formats. Run any AI coding CLI with Ollama, LM Studio, or free-tier models. Single curl install.',
+    stack: ['TypeScript', 'Node.js', 'Cloudflare Workers'],
+    highlights: [
+      'Translates between Anthropic, OpenAI chat, and legacy completions in real-time',
+      'One-command install, works with Claude Code, Codex CLI, and other terminal tools',
+      'Auto-discovers models from Ollama, LM Studio, or local servers',
+      'Handles vision format translation between Anthropic and OpenAI image formats',
+      'Can be deployed as a Cloudflare Worker',
+    ],
+    metrics: [
+      { label: 'Type', value: 'Proxy' },
+      { label: 'Runtime', value: 'Node.js' },
+      { label: 'Deploy', value: 'CF Workers' },
+    ],
+    accentColor: '#a78bfa',
+    links: [{ label: 'GitHub', href: 'https://github.com/khrees2412/pontis' }],
+  },
+  {
+    id: 'tabclose',
+    name: 'Tabclose',
+    role: 'Author',
+    period: 'Oct 2025',
+    problem: 'Too many open tabs slow everything down. Most tab managers are either too aggressive or just count tabs without doing anything useful.',
+    solution: 'Chromium extension that closes tabs after a configurable period of inactivity. Pinned tabs, active tabs, and audio-playing tabs are always safe. Supports domain whitelists.',
+    stack: ['JavaScript', 'Chrome Extensions MV3', 'chrome.storage', 'chrome.alarms'],
+    highlights: [
+      'Inactivity timer with configurable threshold (default 6 hours), checked every minute',
+      'Scheduled daily cleanup to close stale tabs in bulk',
+      'Domain whitelist to protect sites that should never auto-close',
+      'Pinned, active, and audio-playing tabs are always preserved',
+      'All data stays in the browser. No servers, no tracking',
+    ],
+    metrics: [
+      { label: 'Platform', value: 'Chrome' },
+      { label: 'Manifest', value: 'MV3' },
+      { label: 'Privacy', value: 'Local-only' },
+    ],
+    accentColor: '#f59e0b',
+    links: [{ label: 'GitHub', href: 'https://github.com/khrees2412/tabclose' }],
+  },
+  {
     id: 'gatekeeper',
     name: 'Gatekeeper',
     role: 'Author',
     period: 'Feb 2026',
-    problem: 'Every company runs an API gateway — AWS API Gateway, Kong, custom Redis middleware. The rules for who can call what, how often, live in a database your company controls. That\'s a trust assumption most consumers can\'t verify.',
-    solution: 'Moved the API gateway control plane on-chain. Gatekeeper is a Solana program implementing API key management, role-based access control via 64-bit permission bitmasks, and fixed-window rate limiting — with every access decision creating an immutable, auditable blockchain record.',
+    problem: 'API gateways store access rules in a database the company controls. There\'s no way for consumers to verify those rules independently.',
+    solution: 'On-chain API gateway on Solana. API key management, RBAC with 64-bit permission bitmasks, and fixed-window rate limiting. Every access decision is recorded on-chain.',
     stack: ['Rust', 'Anchor', 'Solana', 'TypeScript', 'Express.js', 'SPL'],
     highlights: [
-      'On-chain API key issuance and revocation — cryptographic credentials with permission scopes encoded as 64-bit bitmasks',
-      'Fixed-window rate limiting enforced at the program level — quota modifications are cryptographically recorded and publicly verifiable',
-      'TypeScript/Node.js CLI for administrative commands and an Express.js HTTP adapter for middleware integration',
-      'Auditability by default: every permission check, key revocation, and rate limit change creates an immutable timestamp on devnet',
+      'On-chain API key issuance and revocation with permission scopes as 64-bit bitmasks',
+      'Rate limiting enforced at the program level with publicly verifiable records',
+      'CLI for admin commands and an Express.js adapter for middleware integration',
+      'Every permission check and key change creates an immutable record on devnet',
     ],
     metrics: [
       { label: 'Protocol', value: 'Solana' },
@@ -204,14 +295,14 @@ const SIDE_PROJECTS: Project[] = [
     name: 'Chatdump',
     role: 'Author',
     period: 'Mar 2026',
-    problem: 'AI chat share links are ephemeral and platform-locked. Valuable conversations — debugging sessions, research threads, architecture discussions — disappear or can\'t be reused across different AI systems.',
-    solution: 'Built a converter that takes public AI chat share links and outputs clean, portable Markdown. Supports ChatGPT, Claude, Copilot, Gemini, and Grok. Includes CLI, multiple view modes, and cross-platform continuation so you can pick up a conversation in any AI.',
+    problem: 'AI chat share links disappear or are locked to one platform. Useful conversations get lost when you want to reference them later or continue in a different tool.',
+    solution: 'Converter that takes public AI chat share links and outputs clean Markdown. Works with ChatGPT, Claude, Copilot, Gemini, and Grok. Has a CLI and supports cross-platform continuation.',
     stack: ['TypeScript', 'Bun', 'Vite', 'CLI'],
     highlights: [
-      'Parses share links from 5 major AI platforms into clean, syntax-highlighted Markdown',
-      'CLI with customizable output options for scripting and automation workflows',
-      'Cross-platform continuation — share conversations to any AI with one click',
-      'URL history for quick access to recently converted links',
+      'Parses share links from 5 AI platforms into clean, syntax-highlighted Markdown',
+      'CLI with customizable output for scripting',
+      'Cross-platform continuation to pick up a conversation in any AI',
+      'URL history for recently converted links',
     ],
     metrics: [
       { label: 'Platforms', value: '5' },
@@ -226,13 +317,13 @@ const SIDE_PROJECTS: Project[] = [
     name: 'Revoka',
     role: 'Author',
     period: 'Dec 2025',
-    problem: 'Token delegation on Solana is powerful but opaque — once you\'ve delegated token authority, there\'s no clean user-facing tool to audit and revoke those permissions. Most users don\'t know what they\'ve approved.',
-    solution: 'Built a minimal dApp for managing and revoking token delegations on Solana. Clean interface surfacing all active delegations, with single-click revocation and a straightforward confirmation flow.',
+    problem: 'Token delegation on Solana is powerful but hard to track. Once you\'ve approved something, there\'s no easy way to see or revoke those permissions.',
+    solution: 'Minimal dApp for viewing and revoking token delegations on Solana. Shows all active delegations in one view with single-click revocation.',
     stack: ['TypeScript', 'Next.js', 'Solana Web3.js', 'Tailwind CSS', 'Shadcn UI', 'Bun'],
     highlights: [
-      'Surfaces all active token delegations for a connected wallet in a single view',
-      'One-click revocation with clear confirmation — no CLI, no manual transaction construction',
-      'Built with Solana Web3.js for direct on-chain interaction, Shadcn UI for accessible components',
+      'Shows all active token delegations for a connected wallet',
+      'One-click revocation with a confirmation step',
+      'Built with Solana Web3.js for direct on-chain interaction',
     ],
     metrics: [
       { label: 'Chain', value: 'Solana' },
@@ -305,7 +396,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                   background: hovered ? 'var(--surface-hover)' : 'var(--surface)',
                   border: '1px solid var(--line)',
                   borderRadius: '6px',
-                  transition: 'all 0.2s',
+                  transition: 'background 0.2s',
                 }}
               >
                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.08em' }}>
@@ -518,24 +609,24 @@ export function Projects() {
       <div className="container">
         <ProjectSection
           label="EXPERIENCE"
-          heading="Production systems."
-          sub="Companies where I was embedded in the engineering team — high stakes, real scale, real consequences."
+          heading="Systems I've shipped."
+          sub="Where I was part of the engineering team, working on real products at real scale."
           projects={EXPERIENCE}
           accentColor="var(--green-signal)"
         />
 
         <ProjectSection
-          label="FOUNDING WORK"
-          heading="From the ground up."
-          sub="Projects I architected end-to-end — full ownership from design through deployment."
+          label="OPEN SOURCE & FOUNDING"
+          heading="Built from scratch."
+          sub="Projects I built from scratch, end to end."
           projects={FOUNDING}
           accentColor="var(--violet)"
         />
 
         <ProjectSection
           label="SIDE PROJECTS"
-          heading="Building in public."
-          sub="Tools I build because the problem bothers me. Open source, shipped, and actively maintained."
+          heading="Tools I build because the problem bothers me."
+          sub="Open source, shipped, and actively maintained."
           projects={SIDE_PROJECTS}
           accentColor="var(--electric-bright)"
         />

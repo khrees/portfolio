@@ -1,6 +1,5 @@
-import { useEffect, useState, useCallback, useRef } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { gsap } from '#/lib/gsap'
 
 const KONAMI = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a']
 
@@ -11,7 +10,7 @@ type DebugInfo = {
   mode: string
 }
 
-export function EasterEggs({ onOpenTerminal }: { onOpenTerminal: () => void }) {
+export function EasterEggs({ onOpenTerminal: _onOpenTerminal }: { onOpenTerminal: () => void }) {
   const [debugMode, setDebugMode] = useState(false)
   const [debugInfo, setDebugInfo] = useState<DebugInfo>({ fps: 60, scrollY: 0, scrollSpeed: 0, mode: 'normal' })
   const konamiIndex = useRef(0)
@@ -20,28 +19,10 @@ export function EasterEggs({ onOpenTerminal }: { onOpenTerminal: () => void }) {
   const scrollSpeedRef = useRef(0)
   const fpsFrames = useRef(0)
   const fpsLast = useRef(Date.now())
-  const typingRef = useRef('')
-  const typingTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Konami code
+  // Konami code only — no global "first key opens terminal"
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      // Ignore if in an input
-      if ((e.target as Element)?.tagName === 'INPUT') return
-
-      // Typing easter egg — open terminal on any letter key
-      if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
-        typingRef.current += e.key
-        if (typingTimer.current) clearTimeout(typingTimer.current)
-        typingTimer.current = setTimeout(() => { typingRef.current = '' }, 1500)
-
-        // Open terminal after 1 character (instant)
-        if (typingRef.current.length === 1) {
-          onOpenTerminal()
-        }
-      }
-
-      // Konami code check
       if (e.key === KONAMI[konamiIndex.current]) {
         konamiIndex.current++
         if (konamiIndex.current === KONAMI.length) {
@@ -55,7 +36,7 @@ export function EasterEggs({ onOpenTerminal }: { onOpenTerminal: () => void }) {
 
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [onOpenTerminal])
+  }, [])
 
   // Scroll speed detection + cinematic/glitch mode
   useEffect(() => {
@@ -111,41 +92,6 @@ export function EasterEggs({ onOpenTerminal }: { onOpenTerminal: () => void }) {
     rafId = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(rafId)
   }, [debugMode])
-
-  // Idle mode — animate background on idle
-  useEffect(() => {
-    let idleTimer: ReturnType<typeof setTimeout>
-    let active = false
-
-    const resetIdle = () => {
-      clearTimeout(idleTimer)
-      if (active) {
-        gsap.to('body::before', { opacity: 0.03, duration: 1 })
-        active = false
-      }
-      idleTimer = setTimeout(() => {
-        active = true
-        // Subtle idle animation on the grid
-        gsap.to('body', {
-          '--idle': '1',
-          duration: 2,
-          ease: 'power1.inOut',
-        })
-      }, 5000)
-    }
-
-    window.addEventListener('mousemove', resetIdle)
-    window.addEventListener('keydown', resetIdle)
-    window.addEventListener('scroll', resetIdle)
-    resetIdle()
-
-    return () => {
-      window.removeEventListener('mousemove', resetIdle)
-      window.removeEventListener('keydown', resetIdle)
-      window.removeEventListener('scroll', resetIdle)
-      clearTimeout(idleTimer)
-    }
-  }, [])
 
   return (
     <AnimatePresence>

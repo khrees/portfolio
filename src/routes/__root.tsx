@@ -9,6 +9,7 @@ export const Route = createRootRoute({
 function RootLayout() {
   return (
     <SmoothScroll>
+      <a href="#main-content" className="skip-link">Skip to main content</a>
       <CustomCursor />
       <Outlet />
     </SmoothScroll>

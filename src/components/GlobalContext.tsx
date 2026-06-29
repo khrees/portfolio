@@ -124,7 +124,7 @@ function FlowLine({ from, to, regions, delay = 0 }: { from: string; to: string; 
       <line
         x1={`${x1}%`} y1={`${y1}%`}
         x2={`${x2}%`} y2={`${y2}%`}
-        stroke="rgba(99,102,241,0.15)"
+        stroke="rgba(45,212,168,0.15)"
         strokeWidth="1"
       />
       {/* Animated pulse along line */}
@@ -149,10 +149,10 @@ function FlowLine({ from, to, regions, delay = 0 }: { from: string; to: string; 
 }
 
 const STATS = [
-  { value: '4+', label: 'Years in fintech' },
+  { value: '4+', label: 'Years shipping software' },
   { value: '12+', label: 'Provider integrations' },
-  { value: '3', label: 'Active regions' },
-  { value: '∞', label: 'Transactions processed' },
+  { value: '10+', label: 'Projects shipped' },
+  { value: '5', label: 'Companies' },
 ]
 
 export function GlobalContext() {
@@ -195,7 +195,7 @@ export function GlobalContext() {
         width: '800px',
         height: '400px',
         borderRadius: '50%',
-        background: 'radial-gradient(ellipse, rgba(99,102,241,0.06) 0%, transparent 70%)',
+        background: 'radial-gradient(ellipse, rgba(45,212,168,0.06) 0%, transparent 70%)',
         pointerEvents: 'none',
       }} />
 
@@ -222,9 +222,9 @@ export function GlobalContext() {
               maxWidth: '600px',
             }}
           >
-            Infrastructure built for
+            Systems built
             <br />
-            <span className="text-gradient">a borderless world.</span>
+            <span className="text-gradient">at real scale.</span>
           </h2>
         </div>
 
@@ -311,7 +311,7 @@ export function GlobalContext() {
             color: 'var(--text-muted)',
             letterSpacing: '0.1em',
           }}>
-            ACTIVE PAYMENT CORRIDORS
+            ACTIVE REGIONS
           </div>
         </div>
 

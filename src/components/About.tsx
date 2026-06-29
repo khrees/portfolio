@@ -3,10 +3,10 @@ import { useGSAP, gsap } from '#/lib/gsap'
 import { motion } from 'motion/react'
 
 const SKILLS = [
-  { group: 'Languages', items: ['Go', 'Rust', 'TypeScript', 'Python', 'SQL'] },
-  { group: 'Infrastructure', items: ['PostgreSQL', 'Redis', 'REST APIs', 'Solana', 'Docker'] },
-  { group: 'Domains', items: ['Payments', 'Mandates', 'DeFi', 'Fintech', 'DevEx'] },
-  { group: 'Tools', items: ['Anchor', 'Vue.js', 'React', 'Git', 'Linux'] },
+  { group: 'Languages', items: ['Go', 'Rust', 'TypeScript', 'Python', 'SQL', 'JavaScript'] },
+  { group: 'Infrastructure', items: ['PostgreSQL', 'Redis', 'REST APIs', 'Docker', 'Cloudflare', 'AWS'] },
+  { group: 'Domains', items: ['Payments', 'Developer Tools', 'Fintech', 'DevEx', 'Privacy', 'Automation'] },
+  { group: 'Tools', items: ['React', 'Next.js', 'Vue.js', 'Nuxt.js', 'Tailwind CSS', 'Git', 'CI/CD'] },
 ]
 
 export function About() {
@@ -87,7 +87,7 @@ export function About() {
                 style={{
                   padding: '2px',
                   borderRadius: '14px',
-                  background: 'linear-gradient(135deg, rgba(99,102,241,0.45), rgba(139,92,246,0.3), rgba(6,182,212,0.2))',
+                  background: 'linear-gradient(135deg, rgba(45,212,168,0.45), rgba(20,184,166,0.3), rgba(6,182,212,0.2))',
                   width: 'fit-content',
                   maxWidth: '100%',
                 }}
@@ -109,10 +109,10 @@ export function About() {
               </div>
             </motion.figure>
             {[
-              `I'm Christian Ndu — a software engineer focused on financial infrastructure. Based in Lagos, Nigeria, I build systems that move money across borders, on-chain and off.`,
-              `My work spans the full spectrum of fintech: from high-scale payment APIs at Maplerad processing thousands of cross-border transactions, to on-chain mandate protocols at Debyth solving problems that don't have existing primitives.`,
-              `I care deeply about systems that are correct, not just working. Financial software has a zero-tolerance failure model — a bug isn't just an error, it's someone's money. That shapes how I approach every design decision.`,
-              `Outside of work, I build developer tools and contribute to open source. I think good engineering is also about communication — writing clear docs, readable code, and sharing what I've learned.`,
+              `I'm Christian Ndu, a software engineer based in Lagos, Nigeria. I work on infrastructure, developer tools, and systems that need to be reliable under real conditions.`,
+              `The work ranges from payment APIs at Maplerad, to on-chain protocols at Debyth, to developer experience at Mono and Port.io. I've also built privacy tools, browser extensions, AI dev tools, and CLI utilities. Whatever the problem is, I like figuring it out.`,
+              `I care about systems that are correct, not just working. A bug in financial software means someone's money. A bug in a dev tool means broken trust. That shapes how I approach design decisions.`,
+              `Outside of work, I build things because the problem bothers me. Mostly open source, mostly local-first. I also think good engineering includes good communication — clear docs, readable code, sharing what you've learned.`,
             ].map((para, i) => (
               <p key={i} style={{ fontSize: '1rem', color: 'var(--text-soft)', lineHeight: 1.75 }}>
                 {para}

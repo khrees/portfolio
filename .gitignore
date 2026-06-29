@@ -11,3 +11,14 @@ dist-ssr
 .vinxi
 __unconfig*
 todos.json
+
+# Agent / tooling artifacts (not project source)
+.agents/
+.vscode/
+.cta.json
+skills-lock.json
+
+# Local documents & personal files
+*.pdf
+WEBSITE_DESIGN_AUDIT.md
+spec.md

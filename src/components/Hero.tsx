@@ -1,12 +1,13 @@
 import { useRef, lazy, Suspense } from 'react'
 import { useGSAP, gsap } from '#/lib/gsap'
 import { motion } from 'motion/react'
+import { useNavigate } from '@tanstack/react-router'
 
 const TransactionNetwork = lazy(() =>
   import('./TransactionNetwork').then(m => ({ default: m.TransactionNetwork }))
 )
 
-const TAGS = ['Rust', 'Solana', 'Go', 'Payments', 'Infrastructure', 'PostgreSQL']
+const TAGS = ['Go', 'Rust', 'TypeScript', 'Infrastructure', 'Developer Tools', 'PostgreSQL']
 
 function SplitTextReveal({ text, delay = 0 }: { text: string; delay?: number }) {
   const chars = text.split('')
@@ -34,6 +35,7 @@ function SplitTextReveal({ text, delay = 0 }: { text: string; delay?: number }) 
 
 export function Hero() {
   const containerRef = useRef<HTMLElement>(null)
+  const navigate = useNavigate()
   const subRef = useRef<HTMLParagraphElement>(null)
   const tagsRef = useRef<HTMLDivElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
@@ -82,7 +84,7 @@ export function Hero() {
         width: '600px',
         height: '600px',
         borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%)',
+        background: 'radial-gradient(circle, rgba(45,212,168,0.12) 0%, transparent 70%)',
         pointerEvents: 'none',
       }} />
 
@@ -110,20 +112,14 @@ export function Hero() {
             perspective: '800px',
           }}
         >
-          <div><SplitTextReveal text="Building" delay={0.3} /></div>
-          <div>
-            <SplitTextReveal text="systems " delay={0.5} />
-            <span className="text-gradient" style={{ display: 'inline-block' }}>
-              <SplitTextReveal text="for" delay={0.7} />
-            </span>
-          </div>
+          <div><SplitTextReveal text="Engineering" delay={0.3} /></div>
           <div>
             <span className="text-gradient" style={{ display: 'inline-block' }}>
-              <SplitTextReveal text="money," delay={0.9} />
+              <SplitTextReveal text="delightful" delay={0.5} />
             </span>
           </div>
-          <div><SplitTextReveal text="automation," delay={1.1} /></div>
-          <div><SplitTextReveal text="and scale." delay={1.3} /></div>
+          <div><SplitTextReveal text="systems" delay={0.7} /></div>
+          <div><SplitTextReveal text="that work." delay={0.9} /></div>
         </h1>
 
         <p
@@ -136,8 +132,8 @@ export function Hero() {
             marginBottom: '2rem',
           }}
         >
-          Software engineer specializing in financial infrastructure — payments, mandates,
-          and on-chain systems. 4+ years building systems that move money reliably at scale.
+          Software engineer working on infrastructure, developer tools,
+          and systems that need to work under real conditions. 4+ years of shipping.
         </p>
 
         <div ref={tagsRef} style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '2.5rem' }}>
@@ -148,8 +144,8 @@ export function Hero() {
 
         <div ref={ctaRef} style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
           <a
-            href="#work"
-            onClick={e => { e.preventDefault(); document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' }) }}
+            href="/work"
+            onClick={e => { e.preventDefault(); navigate({ to: '/work' }) }}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
