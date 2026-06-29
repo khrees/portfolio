@@ -9,9 +9,6 @@ interface HireModalProps {
 
 type Status = 'idle' | 'sending' | 'success' | 'error'
 
-// Replace with your Formspree form ID from https://formspree.io
-const FORMSPREE_ID = 'xdapqkag'
-
 export function HireModal({ open, onClose }: HireModalProps) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -76,9 +73,9 @@ export function HireModal({ open, onClose }: HireModalProps) {
     e.preventDefault()
     setStatus('sending')
     try {
-      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      const res = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, message }),
       })
       if (res.ok) {

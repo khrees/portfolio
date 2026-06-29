@@ -1,4 +1,4 @@
-import { defineConfig, type Plugin } from 'vite'
+import { defineConfig, type Plugin, loadEnv } from 'vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import viteReact from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
@@ -6,6 +6,7 @@ import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import mdx from '@mdx-js/rollup'
 import { Feed } from 'feed'
 import { posts } from './src/lib/blog'
+import { sendContactEmail, getContactEnv } from './src/lib/api/contact'
 import { writeFileSync, mkdirSync } from 'fs'
 import { join } from 'path'
 
@@ -56,6 +57,59 @@ function rssPlugin(): Plugin {
   }
 }
 
+function apiPlugin(): Plugin {
+  return {
+    name: 'api',
+    configureServer(server) {
+      const env = loadEnv(server.config.mode, server.config.envDir || process.cwd(), '')
+      const apiKey = env.RESEND_API_KEY || process.env.RESEND_API_KEY
+      const contactEmail = env.CONTACT_EMAIL || process.env.CONTACT_EMAIL
+
+      server.middlewares.use('/api/contact', async (req, res) => {
+        if (req.method !== 'POST') {
+          res.statusCode = 405
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify({ error: 'Method not allowed' }))
+          return
+        }
+
+        let body = ''
+        req.on('data', (chunk: string) => { body += chunk })
+        req.on('end', async () => {
+          try {
+            const { name, email, message } = JSON.parse(body)
+
+            if (!name || !email || !message) {
+              res.statusCode = 400
+              res.setHeader('Content-Type', 'application/json')
+              res.end(JSON.stringify({ error: 'Missing required fields' }))
+              return
+            }
+
+            if (!apiKey || !contactEmail) {
+              console.error('[api] Missing RESEND_API_KEY or CONTACT_EMAIL')
+              res.statusCode = 500
+              res.setHeader('Content-Type', 'application/json')
+              res.end(JSON.stringify({ error: 'Server not configured for email' }))
+              return
+            }
+
+            await sendContactEmail({ name, email, message }, { apiKey, to: contactEmail })
+
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify({ ok: true }))
+          } catch (err) {
+            console.error('[api] contact error:', err)
+            res.statusCode = 500
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify({ error: 'Failed to send message' }))
+          }
+        })
+      })
+    },
+  }
+}
+
 export default defineConfig({
   plugins: [
     tsconfigPaths({ projects: ['./tsconfig.json'] }),
@@ -64,6 +118,7 @@ export default defineConfig({
     mdx({}),
     viteReact(),
     rssPlugin(),
+    apiPlugin(),
   ],
   optimizeDeps: {
     include: ['react/jsx-runtime'],
