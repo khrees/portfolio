@@ -24,30 +24,6 @@ const CONNECTIONS = [
   { from: 'Lagos', to: 'Nairobi' },
 ]
 
-function AnimatedDot({ delay = 0, accentColor }: { delay?: number; accentColor: string }) {
-  return (
-    <motion.div
-      style={{
-        width: 6,
-        height: 6,
-        borderRadius: '50%',
-        background: accentColor,
-        position: 'absolute',
-      }}
-      animate={{
-        scale: [1, 1.8, 1],
-        opacity: [0.8, 0.3, 0.8],
-      }}
-      transition={{
-        duration: 2,
-        repeat: Infinity,
-        delay,
-        ease: 'easeInOut',
-      }}
-    />
-  )
-}
-
 function PulseNode({ region }: { region: Region }) {
   return (
     <div

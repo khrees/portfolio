@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router'
 import { motion } from 'motion/react'
 import type { PostMeta } from '#/lib/blog'
 import { formatDate } from '#/lib/blog'
@@ -23,8 +24,8 @@ export function BlogPost({ post, children }: BlogPostProps) {
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             style={{ marginBottom: '3rem' }}
           >
-            <a
-              href="/blog"
+            <Link
+              to="/blog"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -40,7 +41,7 @@ export function BlogPost({ post, children }: BlogPostProps) {
               onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
             >
               <span aria-hidden>←</span> Back to blog
-            </a>
+            </Link>
           </motion.div>
 
           {/* Header */}

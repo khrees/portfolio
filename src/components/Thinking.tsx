@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { Link } from '@tanstack/react-router'
 import { useGSAP, gsap } from '#/lib/gsap'
 import { motion } from 'motion/react'
 import { posts } from '#/lib/blog'
@@ -69,8 +70,9 @@ function EssayItem({ slug, number, title, description, tag, index }: {
             {description}
           </p>
 
-          <a
-            href={`/blog/${slug}`}
+          <Link
+            to="/blog/$slug"
+            params={{ slug }}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -86,7 +88,7 @@ function EssayItem({ slug, number, title, description, tag, index }: {
             onMouseLeave={(e) => { e.currentTarget.style.opacity = '1' }}
           >
             Read full essay →
-          </a>
+          </Link>
         </div>
       </div>
     </motion.div>
@@ -153,8 +155,8 @@ export function Thinking() {
         ))}
 
         <div style={{ marginTop: '2.5rem' }}>
-          <a
-            href="/blog"
+          <Link
+            to="/blog"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -173,7 +175,7 @@ export function Thinking() {
             onMouseLeave={e => { e.currentTarget.style.background = 'var(--electric)'; e.currentTarget.style.transform = 'translateY(0)' }}
           >
             Read all essays →
-          </a>
+          </Link>
         </div>
       </div>
     </section>

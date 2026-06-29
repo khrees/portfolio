@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { useGSAP, gsap } from '#/lib/gsap'
-import { motion, AnimatePresence } from 'motion/react'
+import { motion } from 'motion/react'
 
 type Project = {
   id: string

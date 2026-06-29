@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router'
 import type { PostMeta } from '#/lib/blog'
 import { formatDate } from '#/lib/blog'
 
@@ -83,8 +84,9 @@ function BlogCardContent({ post }: { post: PostMeta }) {
 
 export function BlogCard({ post }: { post: PostMeta; index: number }) {
   return (
-    <a
-      href={`/blog/${post.slug}`}
+    <Link
+      to="/blog/$slug"
+      params={{ slug: post.slug }}
       style={{
         display: 'block',
         textDecoration: 'none',
@@ -108,6 +110,6 @@ export function BlogCard({ post }: { post: PostMeta; index: number }) {
       }}
     >
       <BlogCardContent post={post} />
-    </a>
+    </Link>
   )
 }

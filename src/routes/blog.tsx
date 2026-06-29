@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Outlet, useRouterState } from '@tanstack/react-router'
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Nav } from '../components/Nav'
@@ -12,6 +12,12 @@ export const Route = createFileRoute('/blog')({ component: BlogPage })
 
 function BlogPage() {
   const [terminalOpen, setTerminalOpen] = useState(false)
+  const pathname = useRouterState({ select: s => s.location.pathname })
+  const isPostPage = pathname.startsWith('/blog/') && pathname !== '/blog'
+
+  if (isPostPage) {
+    return <Outlet />
+  }
 
   return (
     <>

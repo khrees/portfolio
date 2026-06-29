@@ -99,6 +99,7 @@ export function Nav() {
           <Link
             to="/about"
             style={navLinkStyle}
+            activeProps={{ style: { ...navLinkStyle, color: 'var(--text)' } }}
             onMouseEnter={e => (e.currentTarget.style.color = 'var(--text)')}
             onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-soft)')}
           >

@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Nav } from '../../components/Nav'
@@ -98,16 +98,17 @@ function PostPage() {
   )
 }
 
-function SuggestedPostCard({ post }: { post: PostMeta; index: number }) {
+function SuggestedPostCard({ post, index }: { post: PostMeta; index: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: Math.random() * 0.1, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.5, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
     >
-      <a
-        href={`/blog/${post.slug}`}
+      <Link
+        to="/blog/$slug"
+        params={{ slug: post.slug }}
         style={{
           display: 'block',
           textDecoration: 'none',
@@ -151,7 +152,7 @@ function SuggestedPostCard({ post }: { post: PostMeta; index: number }) {
         >
           {post.description}
         </p>
-      </a>
+      </Link>
     </motion.div>
   )
 }
@@ -181,8 +182,8 @@ function PostNotFound() {
         >
           This essay doesn't exist yet. Maybe it's still being written.
         </p>
-        <a
-          href="/blog"
+        <Link
+          to="/blog"
           style={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -200,7 +201,7 @@ function PostNotFound() {
           onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--electric)')}
         >
           ← Back to blog
-        </a>
+        </Link>
       </div>
     </main>
   )

@@ -1,9 +1,12 @@
 import { ReactLenis, useLenis } from 'lenis/react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { gsap, ScrollTrigger } from '#/lib/gsap'
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const lenis = useLenis()
+  const [prefersReducedMotion] = useState(() =>
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  )
 
   useEffect(() => {
     if (!lenis) return
@@ -14,8 +17,6 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       gsap.ticker.remove(lenis.raf)
     }
   }, [lenis])
-
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   return (
     <ReactLenis root options={{ lerp: 0.1, duration: 1.2, smoothWheel: !prefersReducedMotion }}>

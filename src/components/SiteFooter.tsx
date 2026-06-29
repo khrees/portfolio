@@ -1,5 +1,3 @@
-import { motion } from 'motion/react'
-
 const LINKS = [
   { label: 'GitHub', href: 'https://github.com/khrees2412' },
   { label: 'LinkedIn', href: 'https://linkedin.com/in/ndu-christian' },
