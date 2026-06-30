@@ -8,6 +8,7 @@ import { Terminal } from '../../components/Terminal'
 import { EasterEggs } from '../../components/EasterEggs'
 import { getPostBySlug, posts } from '#/lib/blog'
 import type { PostMeta } from '#/lib/blog'
+import { SEO } from '../../components/SEO'
 
 // Eagerly import all MDX files so we can look them up by slug
 const mdxModules = import.meta.glob('/content/blog/*.mdx', { eager: true }) as Record<
@@ -32,6 +33,7 @@ function PostPage() {
   if (!post || !MDXContent) {
     return (
       <>
+        <SEO title="Post Not Found — Christian Ndu" description="This essay does not exist." />
         <Nav />
         <PostNotFound />
         <SiteFooter onOpenTerminal={() => setTerminalOpen(true)} />
@@ -45,6 +47,12 @@ function PostPage() {
 
   return (
     <>
+      <SEO
+        title={`${post.title} — Christian Ndu`}
+        description={post.description}
+        image="https://khrees.com/og-blog.jpg"
+        url={`https://khrees.com/blog/${post.slug}`}
+      />
       <Nav />
 
       <BlogPost post={post}>

@@ -6,6 +6,7 @@ import { About } from '../components/About'
 import { SiteFooter } from '../components/SiteFooter'
 import { Terminal } from '../components/Terminal'
 import { EasterEggs } from '../components/EasterEggs'
+import { SEO } from '../components/SEO'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
@@ -14,6 +15,12 @@ function AboutPage() {
 
   return (
     <>
+      <SEO
+        title="About — Christian Ndu"
+        description="Biography, background, and tech stack of Christian Ndu. Architecting distributed banking networks, on-chain payments, and backend systems."
+        image="https://khrees.com/og-about.jpg"
+        url="https://khrees.com/about"
+      />
       <Nav />
 
       <main id="main-content" style={{ position: 'relative', zIndex: 2 }}>

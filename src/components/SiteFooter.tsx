@@ -1,5 +1,5 @@
 const LINKS = [
-  { label: "GitHub", href: "https://github.com/khrees2412" },
+  { label: "GitHub", href: "https://github.com/khrees" },
   { label: "LinkedIn", href: "https://linkedin.com/in/ndu-christian" },
   { label: "Email", href: "mailto:christiannduh@gmail.com" },
 ];
@@ -35,7 +35,7 @@ export function SiteFooter({ onOpenTerminal }: { onOpenTerminal: () => void }) {
               letterSpacing: "0.08em",
             }}
           >
-            Software Engineer · Lagos, Nigeria
+            Software & Developer Experience Engineer · Lagos, Nigeria
           </p>
         </div>
 

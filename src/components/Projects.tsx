@@ -254,7 +254,7 @@ const SIDE_PROJECTS: Project[] = [
       { label: "AI", value: "Multi-provider" },
     ],
     accentColor: "#f43f5e",
-    links: [{ label: "GitHub", href: "https://github.com/khrees2412/autoply" }],
+    links: [{ label: "GitHub", href: "https://github.com/khrees/autoply" }],
   },
   {
     id: "grepbase",
@@ -286,9 +286,7 @@ const SIDE_PROJECTS: Project[] = [
       { label: "License", value: "MIT OSS" },
     ],
     accentColor: "#06b6d4",
-    links: [
-      { label: "GitHub", href: "https://github.com/khrees2412/grepbase" },
-    ],
+    links: [{ label: "GitHub", href: "https://github.com/khrees/grepbase" }],
   },
   {
     id: "veilo",
@@ -313,7 +311,7 @@ const SIDE_PROJECTS: Project[] = [
       { label: "DNS", value: "Cloudflare" },
     ],
     accentColor: "#2dd4a8",
-    links: [{ label: "GitHub", href: "https://github.com/khrees2412/veilo" }],
+    links: [{ label: "GitHub", href: "https://github.com/khrees/veilo" }],
   },
   {
     id: "pontis",
@@ -338,7 +336,7 @@ const SIDE_PROJECTS: Project[] = [
       { label: "Deploy", value: "CF Workers" },
     ],
     accentColor: "#a78bfa",
-    links: [{ label: "GitHub", href: "https://github.com/khrees2412/pontis" }],
+    links: [{ label: "GitHub", href: "https://github.com/khrees/pontis" }],
   },
   {
     id: "tabclose",
@@ -368,9 +366,7 @@ const SIDE_PROJECTS: Project[] = [
       { label: "Privacy", value: "Local-only" },
     ],
     accentColor: "#f59e0b",
-    links: [
-      { label: "GitHub", href: "https://github.com/khrees2412/tabclose" },
-    ],
+    links: [{ label: "GitHub", href: "https://github.com/khrees/tabclose" }],
   },
   {
     id: "gatekeeper",
@@ -394,9 +390,7 @@ const SIDE_PROJECTS: Project[] = [
       { label: "Type", value: "Infra Tool" },
     ],
     accentColor: "#8b5cf6",
-    links: [
-      { label: "GitHub", href: "https://github.com/khrees2412/gatekeeper" },
-    ],
+    links: [{ label: "GitHub", href: "https://github.com/khrees/gatekeeper" }],
   },
   {
     id: "chatdump",
@@ -420,9 +414,7 @@ const SIDE_PROJECTS: Project[] = [
       { label: "Output", value: "Markdown" },
     ],
     accentColor: "#10b981",
-    links: [
-      { label: "GitHub", href: "https://github.com/khrees2412/chatdump" },
-    ],
+    links: [{ label: "GitHub", href: "https://github.com/khrees/chatdump" }],
   },
   {
     id: "revoka",
@@ -452,7 +444,7 @@ const SIDE_PROJECTS: Project[] = [
       { label: "Stack", value: "Next.js" },
     ],
     accentColor: "#a78bfa",
-    links: [{ label: "GitHub", href: "https://github.com/khrees2412/revoka" }],
+    links: [{ label: "GitHub", href: "https://github.com/khrees/revoka" }],
   },
 ];
 

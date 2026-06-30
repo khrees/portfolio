@@ -162,7 +162,7 @@ export function Hero() {
             marginBottom: "2rem",
           }}
         >
-          Software engineer working on infrastructure, developer tools, and
+          Software & Developer Experience Engineer working on infrastructure, developer tools, and
           systems that need to work under real conditions. 4+ years of shipping.
         </p>
 

@@ -8,6 +8,7 @@ import { GlobalContext } from '../components/GlobalContext'
 import { SiteFooter } from '../components/SiteFooter'
 import { Terminal } from '../components/Terminal'
 import { EasterEggs } from '../components/EasterEggs'
+import { SEO } from '../components/SEO'
 
 export const Route = createFileRoute('/')({ component: Portfolio })
 
@@ -16,6 +17,12 @@ function Portfolio() {
 
   return (
     <>
+      <SEO
+        title="Christian Ndu — Software & Developer Experience Engineer"
+        description="Building systems for money, automation, and scale. Rust, Solana, Go, payments infrastructure."
+        image="https://khrees.com/og-main.jpg"
+        url="https://khrees.com/"
+      />
       <Nav />
 
       <main id="main-content" style={{ position: 'relative', zIndex: 2 }}>

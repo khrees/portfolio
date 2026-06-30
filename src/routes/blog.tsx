@@ -7,6 +7,7 @@ import { SiteFooter } from '../components/SiteFooter'
 import { Terminal } from '../components/Terminal'
 import { EasterEggs } from '../components/EasterEggs'
 import { posts } from '#/lib/blog'
+import { SEO } from '../components/SEO'
 
 export const Route = createFileRoute('/blog')({ component: BlogPage })
 
@@ -21,6 +22,12 @@ function BlogPage() {
 
   return (
     <>
+      <SEO
+        title="Blog — Christian Ndu"
+        description="Thoughts on fintech infrastructure, distributed systems, on-chain payments, and developer experience."
+        image="https://khrees.com/og-blog.jpg"
+        url="https://khrees.com/blog"
+      />
       <Nav />
 
       <main id="main-content" style={{ position: 'relative', zIndex: 2, paddingTop: '64px' }}>

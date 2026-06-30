@@ -25,7 +25,7 @@ const COMMANDS: Record<string, string[]> = {
     "  scroll to #work for case studies",
   ],
   about: [
-    "  Christian Ndu — Software Engineer",
+    "  Christian Ndu — Software & Developer Experience Engineer",
     "  Lagos, Nigeria",
     "",
     "  Building software at the intersection of",
@@ -35,7 +35,7 @@ const COMMANDS: Record<string, string[]> = {
   ],
   contact: [
     "  email   → christiannduh@gmail.com",
-    "  github  → github.com/khrees2412",
+    "  github  → github.com/khrees",
     "  linkedin → linkedin.com/in/ndu-christian",
   ],
   skills: [

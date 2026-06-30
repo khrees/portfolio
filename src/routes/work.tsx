@@ -6,6 +6,7 @@ import { Projects } from '../components/Projects'
 import { SiteFooter } from '../components/SiteFooter'
 import { Terminal } from '../components/Terminal'
 import { EasterEggs } from '../components/EasterEggs'
+import { SEO } from '../components/SEO'
 
 export const Route = createFileRoute('/work')({ component: WorkPage })
 
@@ -14,6 +15,12 @@ function WorkPage() {
 
   return (
     <>
+      <SEO
+        title="Selected Work — Christian Ndu"
+        description="Deep dive into financial systems and infrastructure built at Debyth, Maplerad, Everest, and Mono. Payments at scale."
+        image="https://khrees.com/og-work.jpg"
+        url="https://khrees.com/work"
+      />
       <Nav />
 
       <main id="main-content" style={{ position: 'relative', zIndex: 2, paddingTop: '64px' }}>
