@@ -70,14 +70,18 @@ body::before {
 /* Grid background */
 body::after {
   content: "";
-  position: fixed;
-  inset: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   pointer-events: none;
   z-index: 0;
   background-image:
     linear-gradient(rgba(45, 212, 168, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(45, 212, 168, 0.03) 1px, transparent 1px);
   background-size: 60px 60px;
+  background-position: center top;
 }
 
 a {
@@ -917,3 +921,67 @@ select:focus-visible {
     font-size: 16px;
   }
 }
+
+/* ─── Visitors Page Two-Column Layout ─── */
+.visitors-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  padding: 3.5rem 1.5rem 6rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (min-width: 900px) {
+  .visitors-layout {
+    grid-template-columns: 300px 1fr;
+    align-items: start;
+    gap: 60px;
+    padding: 3.5rem 0 6rem;
+  }
+
+  .visitors-hero {
+    position: sticky;
+    top: 120px;
+  }
+}
+
+/* Stepped widths to snap to the centered 60px background grid lines */
+@media (min-width: 900px) and (max-width: 1019.98px) {
+  .visitors-layout {
+    width: 840px;
+    grid-template-columns: 300px 480px;
+  }
+}
+
+@media (min-width: 1020px) and (max-width: 1139.98px) {
+  .visitors-layout {
+    width: 960px;
+    grid-template-columns: 300px 600px;
+  }
+}
+
+@media (min-width: 1140px) and (max-width: 1259.98px) {
+  .visitors-layout {
+    width: 1080px;
+    grid-template-columns: 300px 720px;
+  }
+}
+
+@media (min-width: 1260px) {
+  .visitors-layout {
+    width: 1200px;
+    grid-template-columns: 300px 840px;
+  }
+}
+
+.visitors-wall-container {
+  position: relative;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 18px 18px;
+  border: 1px dashed var(--line);
+  border-radius: 16px;
+  padding: 2rem;
+  min-height: 450px;
+}
+

@@ -210,31 +210,40 @@ SignaturePad.displayName = 'SignaturePad'
 
 // ─── Signature card on the board ──────────────────────────
 
+const getRotation = (id: string) => {
+  let hash = 0
+  for (let i = 0; i < id.length; i++) {
+    hash = id.charCodeAt(i) + ((hash << 5) - hash)
+  }
+  // Deterministic angle between -5 and 5 degrees
+  return (hash % 11) - 5
+}
+
 function SignatureCard({ sig }: { sig: Signature; index: number }) {
+  const rotation = getRotation(sig.id || sig.name)
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, scale: 0.9 }}
+      initial={{ opacity: 0, scale: 0.85 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       style={{
-        flex: '0 0 auto',
-        width: 140,
-        background: 'var(--surface)',
-        border: '1px solid var(--line)',
-        borderRadius: '8px',
-        padding: '0.65rem 0.65rem 0.5rem',
+        width: '100%',
+        minHeight: '100px',
+        padding: '0.5rem',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: '0.25rem',
+        justifyContent: 'center',
+        position: 'relative',
+        transform: `rotate(${rotation}deg)`,
       }}
     >
-      {/* Signature image */}
+      {/* Signature image container */}
       <div
         style={{
           width: '100%',
-          height: 44,
+          height: 54,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -248,7 +257,7 @@ function SignatureCard({ sig }: { sig: Signature; index: number }) {
               maxWidth: '100%',
               maxHeight: '100%',
               objectFit: 'contain',
-              imageRendering: 'auto',
+              filter: 'drop-shadow(0 2px 6px rgba(45,212,168,0.15)) brightness(1.2)',
             }}
           />
         ) : (
@@ -256,9 +265,9 @@ function SignatureCard({ sig }: { sig: Signature; index: number }) {
             style={{
               fontFamily: "'Georgia', serif",
               fontStyle: 'italic',
-              fontSize: '0.75rem',
-              color: 'var(--text-muted)',
-              opacity: 0.5,
+              fontSize: '0.85rem',
+              color: 'var(--text-soft)',
+              opacity: 0.7,
             }}
           >
             ~ {sig.name}
@@ -266,31 +275,35 @@ function SignatureCard({ sig }: { sig: Signature; index: number }) {
         )}
       </div>
 
-      <p
-        style={{
-          margin: 0,
-          fontWeight: 600,
-          fontSize: '0.7rem',
-          color: 'var(--text)',
-          textAlign: 'center',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-          maxWidth: '100%',
-        }}
-      >
-        {sig.name}
-      </p>
-      <p
-        style={{
-          margin: 0,
-          fontSize: '0.55rem',
-          color: 'var(--text-muted)',
-          fontFamily: 'var(--font-mono)',
-        }}
-      >
-        {timeAgo(sig.date)}
-      </p>
+      <div style={{ marginTop: '0.4rem', textAlign: 'center' }}>
+        <p
+          style={{
+            margin: 0,
+            fontWeight: 500,
+            fontSize: '0.65rem',
+            color: 'var(--text-soft)',
+            fontFamily: 'var(--font-mono)',
+            letterSpacing: '0.02em',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            maxWidth: '100%',
+          }}
+        >
+          {sig.name}
+        </p>
+        <p
+          style={{
+            margin: 0,
+            fontSize: '0.5rem',
+            color: 'var(--text-muted)',
+            fontFamily: 'var(--font-mono)',
+            marginTop: '0.1rem',
+          }}
+        >
+          {timeAgo(sig.date)}
+        </p>
+      </div>
     </motion.div>
   )
 }
@@ -307,7 +320,6 @@ export function VisitorsBook() {
   const [canUndo, setCanUndo] = useState(false)
   const nameRef = useRef<HTMLInputElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
-  const boardRef = useRef<HTMLDivElement>(null)
   const padRef = useRef<SignaturePadHandle>(null)
 
   // Fetch signatures with polling for real-time
@@ -331,13 +343,6 @@ export function VisitorsBook() {
     const interval = setInterval(fetchSignatures, 3000)
     return () => clearInterval(interval)
   }, [fetchSignatures])
-
-  // Auto-scroll board to start when new sigs arrive
-  useEffect(() => {
-    if (boardRef.current && signatures.length > 0) {
-      boardRef.current.scrollLeft = 0
-    }
-  }, [signatures.length])
 
   // Focus name field on open
   useEffect(() => {
@@ -426,180 +431,143 @@ export function VisitorsBook() {
 
   return (
     <>
-      {/* ── Hero ── */}
-      <div style={{ padding: '6rem 0 2rem' }}>
-        <div className="container">
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            style={{
+      <div className="visitors-layout">
+          {/* Left Column: Hero CTA */}
+          <div className="visitors-hero">
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.7rem',
+                color: 'var(--text-muted)',
+                letterSpacing: '0.15em',
+                marginBottom: '1.25rem',
+              }}
+            >
+              VISITORS' BOOK
+            </motion.p>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(2.2rem, 5vw, 3.5rem)',
+                fontWeight: 700,
+                letterSpacing: '-0.03em',
+                color: 'var(--text)',
+                lineHeight: 1.05,
+                marginBottom: '1rem',
+              }}
+            >
+              Leave your
+              <br />
+              <span className="text-gradient">mark.</span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
+              style={{
+                fontSize: '1rem',
+                color: 'var(--text-soft)',
+                lineHeight: 1.7,
+                maxWidth: '540px',
+                marginBottom: '2rem',
+              }}
+            >
+              Draw your signature and join the wall.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}
+            >
+              <button
+                type="button"
+                onClick={() => setModalOpen(true)}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.7rem 1.5rem',
+                  background: 'var(--electric)',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontWeight: 600,
+                  fontSize: '0.9rem',
+                  cursor: 'pointer',
+                  transition: 'background 0.2s, transform 0.15s',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--electric-bright)' }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--electric)' }}
+              >
+                <Pen size={16} />
+                Sign the book
+              </button>
+
+              <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                {loading ? '…' : `${signatures.length} ${signatures.length === 1 ? 'signature' : 'signatures'}`}
+              </span>
+            </motion.div>
+          </div>
+
+          {/* Right Column: Signature Wall */}
+          <div className="visitors-wall-container">
+            <p style={{
               fontFamily: 'var(--font-mono)',
               fontSize: '0.7rem',
               color: 'var(--text-muted)',
               letterSpacing: '0.15em',
-              marginBottom: '1.25rem',
-            }}
-          >
-            VISITORS' BOOK
-          </motion.p>
+              marginBottom: '1.5rem',
+            }}>
+              SIGNATURE WALL
+            </p>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(2rem, 5vw, 4rem)',
-              fontWeight: 700,
-              letterSpacing: '-0.03em',
-              color: 'var(--text)',
-              lineHeight: 1.05,
-              marginBottom: '1rem',
-              maxWidth: '700px',
-            }}
-          >
-            Leave your
-            <br />
-            <span className="text-gradient">mark.</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              fontSize: '1rem',
-              color: 'var(--text-soft)',
-              lineHeight: 1.7,
-              maxWidth: '540px',
-              marginBottom: '0.5rem',
-            }}
-          >
-            Draw your signature and join the wall.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
-            style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginTop: '2rem' }}
-          >
-            <button
-              type="button"
-              onClick={() => setModalOpen(true)}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.7rem 1.5rem',
-                background: 'var(--electric)',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '8px',
-                fontWeight: 600,
-                fontSize: '0.9rem',
-                cursor: 'pointer',
-                transition: 'background 0.2s, transform 0.15s',
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--electric-bright)' }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--electric)' }}
-            >
-              <Pen size={16} />
-              Sign the book
-            </button>
-
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-              {loading ? '…' : `${signatures.length} ${signatures.length === 1 ? 'signature' : 'signatures'}`}
-            </span>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* ── Signature board ── */}
-      <div style={{ borderTop: '1px solid var(--line)' }}>
-        <div className="container" style={{ padding: '1.5rem 0 0.5rem' }}>
-          <p style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.7rem',
-            color: 'var(--text-muted)',
-            letterSpacing: '0.15em',
-            marginBottom: '0.75rem',
-          }}>
-            SIGNATURE WALL
-          </p>
-        </div>
-
-        {loading ? (
-          <div className="container" style={{ paddingBottom: '4rem' }}>
-            <div style={{ textAlign: 'center', padding: '3rem 0' }}>
-              <div style={{
-                width: 28, height: 28,
-                border: '2px solid var(--line-bright)',
-                borderTopColor: 'var(--electric)',
-                borderRadius: '50%',
-                margin: '0 auto',
-                animation: 'spin 0.7s linear infinite',
-              }} />
-            </div>
-          </div>
-        ) : signatures.length === 0 ? (
-          <div className="container" style={{ paddingBottom: '4rem' }}>
-            <div style={{ textAlign: 'center', padding: '4rem 0' }}>
-              <Pen size={32} style={{ color: 'var(--text-muted)', marginBottom: '1rem', opacity: 0.4 }} />
-              <p style={{ fontFamily: 'var(--font-display)', fontSize: '1.1rem', color: 'var(--text-soft)' }}>
-                No signatures yet
-              </p>
-              <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.3rem' }}>
-                Be the first to leave your mark.
-              </p>
-            </div>
-          </div>
-        ) : (
-          <div style={{ position: 'relative' }}>
-            {/* Fade edge hint for horizontal scroll */}
-            <div
-              style={{
-                position: 'absolute',
-                top: 0,
-                bottom: 0,
-                right: 0,
-                width: 40,
-                zIndex: 2,
-                pointerEvents: 'none',
-                background: 'linear-gradient(to right, transparent, rgba(5,5,5,0.7))',
-              }}
-            />
-
-            <div
-              ref={boardRef}
-              style={{
-                overflowX: 'auto',
-                overflowY: 'hidden',
-                paddingBottom: '4rem',
-                scrollBehavior: 'smooth',
-                WebkitOverflowScrolling: 'touch',
-              }}
-            >
+            {loading ? (
+              <div style={{ textAlign: 'center', padding: '4rem 0' }}>
+                <div style={{
+                  width: 28, height: 28,
+                  border: '2px solid var(--line-bright)',
+                  borderTopColor: 'var(--electric)',
+                  borderRadius: '50%',
+                  margin: '0 auto',
+                  animation: 'spin 0.7s linear infinite',
+                }} />
+              </div>
+            ) : signatures.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '4rem 0' }}>
+                <Pen size={32} style={{ color: 'var(--text-muted)', marginBottom: '1rem', opacity: 0.4 }} />
+                <p style={{ fontFamily: 'var(--font-display)', fontSize: '1.1rem', color: 'var(--text-soft)' }}>
+                  No signatures yet
+                </p>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.3rem' }}>
+                  Be the first to leave your mark.
+                </p>
+              </div>
+            ) : (
               <div
-                className="container"
                 style={{
-                  display: 'flex',
-                  gap: '0.6rem',
-                  paddingBottom: '1rem',
-                  paddingTop: '0.5rem',
-                  width: 'max-content',
-                  minWidth: '100%',
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))',
+                  gap: '2.5rem 1.25rem',
+                  justifyItems: 'center',
                 }}
               >
-              {signatures.map((sig) => (
-                <SignatureCard key={sig.id} sig={sig} index={signatures.indexOf(sig)} />
-              ))}
-            </div>
+                {signatures.map((sig) => (
+                  <SignatureCard key={sig.id} sig={sig} index={signatures.indexOf(sig)} />
+                ))}
+              </div>
+            )}
           </div>
         </div>
-      )}
-      </div>
 
       {/* ── Sign Modal ── */}
       <AnimatePresence>
@@ -618,34 +586,40 @@ export function VisitorsBook() {
               }}
             />
 
-            <motion.div
-              key="vb-panel"
-              ref={panelRef}
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="sign-modal-title"
-              initial={{ opacity: 0, y: 40, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 24, scale: 0.97 }}
-              transition={{ type: 'spring', damping: 22, stiffness: 260 }}
+            <div
               style={{
                 position: 'fixed',
-                top: '50%', left: '50%',
-                transform: 'translate(-50%, -50%)',
+                inset: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 zIndex: 201,
-                width: 'min(480px, calc(100vw - 1.5rem))',
-                maxHeight: 'calc(100dvh - 2rem)',
-                overflowY: 'auto',
-                background: 'var(--bg-2)',
-                backdropFilter: 'blur(24px)',
-                WebkitBackdropFilter: 'blur(24px)',
-                border: '1px solid var(--line-bright)',
-                borderRadius: '16px',
-                padding: 'clamp(1.25rem, 4vw, 2rem)',
-                boxShadow: '0 32px 80px rgba(0,0,0,0.6)',
-                userSelect: 'none',
+                pointerEvents: 'none',
+                padding: '1rem',
               }}
             >
+              <motion.div
+                key="vb-panel"
+                ref={panelRef}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="sign-modal-title"
+                initial={{ opacity: 0, y: 20, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 15, scale: 0.97 }}
+                transition={{ type: 'spring', damping: 22, stiffness: 260 }}
+                style={{
+                  width: 'min(480px, 100%)',
+                  maxHeight: 'calc(100dvh - 2rem)',
+                  overflowY: 'auto',
+                  background: 'var(--bg)',
+                  border: '1px solid var(--line-bright)',
+                  borderRadius: '16px',
+                  padding: 'clamp(1.25rem, 4vw, 2rem)',
+                  boxShadow: '0 32px 80px rgba(0,0,0,0.6)',
+                  pointerEvents: 'auto',
+                }}
+              >
               {/* Close */}
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <button
@@ -801,6 +775,7 @@ export function VisitorsBook() {
                 </button>
               </form>
             </motion.div>
+          </div>
           </>
         )}
       </AnimatePresence>
