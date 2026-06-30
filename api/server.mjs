@@ -9,6 +9,9 @@
  */
 
 import { createServer } from "node:http";
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
+import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import { Resend } from "resend";
 
 const PORT = process.env.PORT || 4000;
@@ -22,7 +25,12 @@ if (!API_KEY || !CONTACT_EMAIL) {
   process.exit(1);
 }
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const signaturesPath = join(__dirname, "..", ".data", "signatures.json");
+
 const resend = new Resend(API_KEY);
+
+// ─── Helpers ──────────────────────────────────────────────
 
 function escapeHtml(str) {
   return str
@@ -32,6 +40,41 @@ function escapeHtml(str) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
+
+function json(res, status, data) {
+  res.statusCode = status;
+  res.setHeader("Content-Type", "application/json");
+  res.end(JSON.stringify(data));
+}
+
+function readBody(req) {
+  return new Promise((resolve, reject) => {
+    let body = "";
+    req.on("data", (chunk) => (body += chunk));
+    req.on("end", () => {
+      try {
+        resolve(JSON.parse(body));
+      } catch {
+        reject(new Error("Invalid JSON"));
+      }
+    });
+    req.on("error", reject);
+  });
+}
+
+function readSignatures() {
+  if (existsSync(signaturesPath)) {
+    return JSON.parse(readFileSync(signaturesPath, "utf-8"));
+  }
+  return [];
+}
+
+function writeSignatures(data) {
+  mkdirSync(dirname(signaturesPath), { recursive: true });
+  writeFileSync(signaturesPath, JSON.stringify(data, null, 2), "utf-8");
+}
+
+// ─── Route handlers ────────────────────────────────────────
 
 async function handleContact(body) {
   const { name, email, message } = body;
@@ -62,10 +105,49 @@ async function handleContact(body) {
   return { status: 200, body: { ok: true } };
 }
 
+async function handleGetSignatures() {
+  try {
+    const signatures = readSignatures();
+    return { status: 200, body: signatures };
+  } catch (err) {
+    console.error("[api] read signatures error:", err);
+    return { status: 500, body: { error: "Failed to read signatures" } };
+  }
+}
+
+async function handleAddSignature(body) {
+  try {
+    const { name, message, imageData } = body;
+
+    if (!name || !name.trim()) {
+      return { status: 400, body: { error: "Name is required" } };
+    }
+
+    const entry = {
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+      name: name.trim(),
+      message: (message || "").trim(),
+      imageData: imageData || "",
+      date: new Date().toISOString(),
+    };
+
+    const signatures = readSignatures();
+    signatures.unshift(entry);
+    writeSignatures(signatures);
+
+    return { status: 200, body: { ok: true, entry } };
+  } catch (err) {
+    console.error("[api] add signature error:", err);
+    return { status: 500, body: { error: "Failed to add signature" } };
+  }
+}
+
+// ─── Server ────────────────────────────────────────────────
+
 const server = createServer((req, res) => {
-  // CORS headers so the client (on a different origin in prod) can reach this
+  // CORS
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method === "OPTIONS") {
@@ -74,32 +156,39 @@ const server = createServer((req, res) => {
     return;
   }
 
-  if (req.method !== "POST" || req.url !== "/api/contact") {
-    res.statusCode = 404;
-    res.setHeader("Content-Type", "application/json");
-    res.end(JSON.stringify({ error: "Not found" }));
+  const url = req.url;
+
+  // ── Signatures ──
+  if (url === "/api/signatures") {
+    if (req.method === "GET") {
+      handleGetSignatures().then(({ status, body }) => json(res, status, body));
+      return;
+    }
+    if (req.method === "POST") {
+      readBody(req)
+        .then(handleAddSignature)
+        .then(({ status, body }) => json(res, status, body))
+        .catch(() => json(res, 400, { error: "Invalid request" }));
+      return;
+    }
+    json(res, 405, { error: "Method not allowed" });
     return;
   }
 
-  let body = "";
-  req.on("data", (chunk) => {
-    body += chunk;
-  });
-  req.on("end", async () => {
-    try {
-      const parsed = JSON.parse(body);
-      const { status, body: responseBody } = await handleContact(parsed);
-
-      res.statusCode = status;
-      res.setHeader("Content-Type", "application/json");
-      res.end(JSON.stringify(responseBody));
-    } catch (err) {
-      console.error("[api] parse/request error:", err);
-      res.statusCode = 400;
-      res.setHeader("Content-Type", "application/json");
-      res.end(JSON.stringify({ error: "Invalid request" }));
+  // ── Contact ──
+  if (url === "/api/contact") {
+    if (req.method === "POST") {
+      readBody(req)
+        .then(handleContact)
+        .then(({ status, body }) => json(res, status, body))
+        .catch(() => json(res, 400, { error: "Invalid request" }));
+      return;
     }
-  });
+    json(res, 405, { error: "Method not allowed" });
+    return;
+  }
+
+  json(res, 404, { error: "Not found" });
 });
 
 server.listen(PORT, () => {

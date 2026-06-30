@@ -13,7 +13,7 @@ export const posts: PostMeta[] = [
     title: 'Why recurring payments on-chain are fundamentally hard',
     date: '2026-04-10',
     description:
-      'Traditional payment mandates work because banks are trusted custodians — they hold your account and can debit it on your behalf. Blockchain flips this.',
+      'Traditional payment mandates work because banks are trusted custodians: they hold your account and can debit it on your behalf. Blockchain flips this.',
     tags: ['Blockchain', 'Payments'],
     readingTime: '3 min read',
   },
@@ -40,7 +40,7 @@ export const posts: PostMeta[] = [
     title: 'Developer experience is a product decision',
     date: '2026-01-28',
     description:
-      "API documentation isn't a nice-to-have — it's the product. When developers can't figure out your API, they don't call support. They leave.",
+      "API documentation isn't a nice-to-have: it's the product. When developers can't figure out your API, they don't call support. They leave.",
     tags: ['DevEx', 'Product'],
     readingTime: '3 min read',
   },

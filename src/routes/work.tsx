@@ -16,7 +16,7 @@ function WorkPage() {
   return (
     <>
       <SEO
-        title="Selected Work — Christian Ndu"
+        title="Selected Work | Christian Ndu"
         description="Deep dive into financial systems and infrastructure built at Debyth, Maplerad, Everest, and Mono. Payments at scale."
         image="https://khrees.com/og-work.jpg"
         url="https://khrees.com/work"

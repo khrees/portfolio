@@ -23,7 +23,7 @@ function BlogPage() {
   return (
     <>
       <SEO
-        title="Blog — Christian Ndu"
+        title="Blog | Christian Ndu"
         description="Thoughts on fintech infrastructure, distributed systems, on-chain payments, and developer experience."
         image="https://khrees.com/og-blog.jpg"
         url="https://khrees.com/blog"

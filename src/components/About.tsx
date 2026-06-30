@@ -94,7 +94,7 @@ export function About() {
               >
                 <img
                   src="/christian-portrait.png"
-                  alt="Christian Ndu, Software & Developer Experience Engineer — professional portrait in a navy suit against a dark background."
+                  alt="Christian Ndu, Software & Developer Experience Engineer, professional portrait in a navy suit against a dark background."
                   width={560}
                   height={700}
                   style={{
@@ -112,7 +112,7 @@ export function About() {
               `I'm Christian Ndu, a Software & Developer Experience Engineer based in Lagos, Nigeria. I work on infrastructure, developer tools, and systems that need to be reliable under real conditions.`,
               `The work ranges from payment APIs at Maplerad, to on-chain protocols at Debyth, to developer experience at Mono and Port.io. I've also built privacy tools, browser extensions, AI dev tools, and CLI utilities. Whatever the problem is, I like figuring it out.`,
               `I care about systems that are correct, not just working. A bug in financial software means someone's money. A bug in a dev tool means broken trust. That shapes how I approach design decisions.`,
-              `Outside of work, I build things because the problem bothers me. Mostly open source, mostly local-first. I also think good engineering includes good communication — clear docs, readable code, sharing what you've learned.`,
+              `Outside of work, I build things because the problem bothers me. Mostly open source, mostly local-first. I also think good engineering includes good communication: clear docs, readable code, and sharing what you've learned.`,
             ].map((para, i) => (
               <p key={i} style={{ fontSize: '1rem', color: 'var(--text-soft)', lineHeight: 1.75 }}>
                 {para}

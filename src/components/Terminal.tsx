@@ -25,7 +25,7 @@ const COMMANDS: Record<string, string[]> = {
     "  scroll to #work for case studies",
   ],
   about: [
-    "  Christian Ndu — Software & Developer Experience Engineer",
+    "  Christian Ndu | Software & Developer Experience Engineer",
     "  Lagos, Nigeria",
     "",
     "  Building software at the intersection of",
@@ -167,12 +167,17 @@ export function Terminal({ onClose }: { onClose: () => void }) {
               letterSpacing: "0.05em",
             }}
           >
-            christian.ndu — terminal
+            christian.ndu | terminal
           </span>
         </div>
 
         {/* Body */}
-        <div ref={bodyRef} className="terminal-body">
+        <div
+          ref={bodyRef}
+          className="terminal-body"
+          onClick={() => inputRef.current?.focus()}
+          style={{ cursor: "text" }}
+        >
           {lines.map((line, i) => (
             <div
               key={i}
@@ -200,6 +205,13 @@ export function Terminal({ onClose }: { onClose: () => void }) {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKey}
+              onFocus={() => {
+                setTimeout(() => {
+                  if (bodyRef.current) {
+                    bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
+                  }
+                }, 150);
+              }}
               autoComplete="off"
               autoCorrect="off"
               spellCheck={false}

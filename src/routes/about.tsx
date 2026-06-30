@@ -16,7 +16,7 @@ function AboutPage() {
   return (
     <>
       <SEO
-        title="About — Christian Ndu"
+        title="About | Christian Ndu"
         description="Biography, background, and tech stack of Christian Ndu. Architecting distributed banking networks, on-chain payments, and backend systems."
         image="https://khrees.com/og-about.jpg"
         url="https://khrees.com/about"

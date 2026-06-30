@@ -148,17 +148,19 @@ export function HireModal({ open, onClose }: HireModalProps) {
               position: 'fixed',
               top: '50%',
               left: '50%',
-              translateX: '-50%',
-              translateY: '-50%',
+              transform: 'translate(-50%, -50%)',
               zIndex: 201,
               width: 'min(480px, calc(100vw - 1.5rem))',
               maxHeight: 'calc(100dvh - 2rem)',
               overflowY: 'auto',
-              background: 'var(--bg)',
+              background: 'var(--bg-2)',
+              backdropFilter: 'blur(24px)',
+              WebkitBackdropFilter: 'blur(24px)',
               border: '1px solid var(--line-bright)',
               borderRadius: '16px',
               padding: 'clamp(1.25rem, 4vw, 2rem)',
               boxShadow: '0 32px 80px rgba(0,0,0,0.6)',
+              userSelect: 'none',
             }}
           >
             {/* Header */}

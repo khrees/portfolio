@@ -106,6 +106,16 @@ export function Nav() {
             About
           </Link>
 
+          <Link
+            to="/visitors"
+            style={navLinkStyle}
+            activeProps={{ style: { ...navLinkStyle, color: 'var(--text)' } }}
+            onMouseEnter={e => (e.currentTarget.style.color = 'var(--text)')}
+            onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-soft)')}
+          >
+            Visitors
+          </Link>
+
           <button
             type="button"
             onClick={() => setHireOpen(true)}
@@ -177,6 +187,10 @@ export function Nav() {
 
           <Link to="/about" style={{ ...navLinkStyle, display: 'block', padding: '0.85rem 0', borderBottom: '1px solid var(--line)', fontSize: '1rem' }} onClick={() => setMobileOpen(false)}>
             About
+          </Link>
+
+          <Link to="/visitors" style={{ ...navLinkStyle, display: 'block', padding: '0.85rem 0', borderBottom: '1px solid var(--line)', fontSize: '1rem' }} onClick={() => setMobileOpen(false)}>
+            Visitors
           </Link>
 
           <button

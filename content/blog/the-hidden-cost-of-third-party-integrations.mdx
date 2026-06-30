@@ -71,11 +71,13 @@ class CircuitBreaker {
 }
 ```
 
+*Note: In-memory circuit breakers only work inside a single node process. If you scale horizontally (e.g. running 10 container instances behind a load balancer), the state is isolated. One container will trip the circuit, while the other 9 continue to hammer the failing API. In production systems like Maplerad's, you should store failure counters and state transitions in a shared, fast-access cache like Redis to synchronize circuit state across all running processes.*
+
 With circuit breakers, a degraded MTN MoMo API in Nigeria won't block transfers going through Interswitch in Kenya. Each provider's health is isolated.
 
 ## Dead letter queues
 
-Some events can't be processed automatically — the data is malformed, the provider is down for hours, or the webhook payload is from an unknown schema version. These need **human review**.
+Some events can't be processed automatically (due to malformed data, long upstream provider outages, or an unknown webhook payload schema). These need **human review**.
 
 A dead letter queue (DLQ) stores failed events with metadata about why they failed. A dashboard lets operations staff inspect, replay, or discard them:
 
